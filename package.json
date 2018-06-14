@@ -1,7 +1,7 @@
 {
   "name": "nativescript-tailwind",
-  "version": "1.0.1",
-  "description": "",
+  "version": "1.0.2",
+  "description": "A tailwind build which works in NativeScript",
   "main": "index.js",
   "scripts": {
     "build": "tailwind build tailwind.css -o tailwind.out.css -c tailwind.js"
@@ -9,8 +9,9 @@
   "files": [
     "dist"
   ],
-  "keywords": [],
-  "author": "",
+  "repository": "https://github.com/rigor789/nativescript-tailwind",
+  "keywords": ["nativescript", "tailwind"],
+  "author": "Igor Randjelovic",
   "license": "MIT",
   "devDependencies": {
     "tailwindcss": "^0.5.3",
