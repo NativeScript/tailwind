@@ -1,0 +1,16 @@
+{
+  "name": "nativescript-tailwind",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tailwind build tailwind.css -o tailwind.out.css -c tailwind.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "tailwindcss": "^0.5.3",
+    "postcss": "latest"
+  }
+}
