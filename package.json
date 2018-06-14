@@ -1,11 +1,14 @@
 {
   "name": "nativescript-tailwind",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "build": "tailwind build tailwind.css -o tailwind.out.css -c tailwind.js"
   },
+  "files": [
+    "dist"
+  ],
   "keywords": [],
   "author": "",
   "license": "MIT",
