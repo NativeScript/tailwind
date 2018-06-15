@@ -4,7 +4,7 @@
   "description": "A tailwind build which works in NativeScript",
   "main": "index.js",
   "scripts": {
-    "build": "tailwind build tailwind.css -o tailwind.out.css -c tailwind.js"
+    "build": "node build.js"
   },
   "files": [
     "dist"
