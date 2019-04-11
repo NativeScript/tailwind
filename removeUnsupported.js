@@ -15,6 +15,14 @@ module.exports = postcss.plugin('postcss-nativescript', () => {
   return root => {
     root.walkRules(rule => {
       rule.walkDecls(decl => {
+        /**
+         * Allows usage of em/rem values for web
+         * by specifying a multiplier (ex: 16).
+         */
+        if (decl.value.includes('rem')) {
+          decl.value = parseInt(decl.value) * 16
+        }
+        
         if(decl.prop === 'visibility') {
           switch (decl.value) {
             case 'hidden':
@@ -30,8 +38,12 @@ module.exports = postcss.plugin('postcss-nativescript', () => {
               return
           }
         }
-
-        if(!isSupportedProperty(decl.prop, decl.value)) {
+        
+        /**
+         * Remove the "currentColor" value that is not supported
+         * in Nativescript.
+         */
+        if(decl.value === 'currentColor' || !isSupportedProperty(decl.prop, decl.value)) {
           // console.log('removing ', decl.prop, decl.value)
           rule.removeChild(decl)
 
