@@ -1,6 +1,6 @@
 {
   "name": "nativescript-tailwind",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "A tailwind build which works in NativeScript",
   "main": "index.js",
   "scripts": {
