@@ -4,8 +4,14 @@ function isSupportedProperty(prop, val = null) {
   const rules = supportedProperties[prop]
   if (!rules) return false;
 
-  if (val && Array.isArray(rules)) {
-    return rules.includes(val)
+  if (val) {
+    if (val.endsWith('vh') || val.endsWith('vw')) {
+      return false
+    }
+
+    if (Array.isArray(rules)) {
+      return rules.includes(val)
+    }
   }
 
   return true;
