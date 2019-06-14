@@ -17,7 +17,7 @@
   "author": "Igor Randjelovic",
   "license": "MIT",
   "devDependencies": {
-    "postcss": "latest",
-    "tailwindcss": "^1.0.0-beta.8"
+    "postcss": "^7.0.16",
+    "tailwindcss": "^1.0.0"
   }
 }
