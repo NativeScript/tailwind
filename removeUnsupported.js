@@ -1,8 +1,8 @@
-const postcss = require('postcss');
+const postcss = require('postcss')
 
 function isSupportedProperty(prop, val = null) {
   const rules = supportedProperties[prop]
-  if (!rules) return false;
+  if (!rules) return false
 
   if (val) {
     if (val.endsWith('vh') || val.endsWith('vw')) {
@@ -14,7 +14,7 @@ function isSupportedProperty(prop, val = null) {
     }
   }
 
-  return true;
+  return true
 }
 
 module.exports = postcss.plugin('postcss-nativescript', () => {
