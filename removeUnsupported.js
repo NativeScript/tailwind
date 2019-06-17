@@ -5,7 +5,7 @@ function isSupportedProperty(prop, val = null) {
   if (!rules) return false
 
   if (val) {
-    if (val.endsWith('vh') || val.endsWith('vw')) {
+    if (val.endsWith('vh') || val.endsWith('vw') || val.endsWith('em')) {
       return false
     }
 
@@ -17,11 +17,27 @@ function isSupportedProperty(prop, val = null) {
   return true
 }
 
+function isSupportedRule(selector) {
+  if (selector.endsWith(':hover') || selector.endsWith(':focus')) {
+    return false
+  }
+
+  return true
+}
+
 module.exports = postcss.plugin('postcss-nativescript', () => {
   return root => {
     root.walkRules(rule => {
+      if (rule.parent.name === 'media') {
+        rule.parent.remove()
+      }
+
+      if (!isSupportedRule(rule.selector)) {
+        rule.remove()
+      }
+
       rule.walkDecls(decl => {
-        if(decl.prop === 'visibility') {
+        if (decl.prop === 'visibility') {
           switch (decl.value) {
             case 'hidden':
               decl.replaceWith(decl.clone({ value: 'collapse'}))
@@ -29,7 +45,7 @@ module.exports = postcss.plugin('postcss-nativescript', () => {
           }
         }
 
-        if(decl.prop === 'vertical-align') {
+        if (decl.prop === 'vertical-align') {
           switch (decl.value) {
             case 'middle':
               decl.replaceWith(decl.clone({ value: 'center'}))
@@ -37,11 +53,11 @@ module.exports = postcss.plugin('postcss-nativescript', () => {
           }
         }
 
-        if(!isSupportedProperty(decl.prop, decl.value)) {
+        if (!isSupportedProperty(decl.prop, decl.value)) {
           // console.log('removing ', decl.prop, decl.value)
           rule.removeChild(decl)
 
-          if(rule.nodes.length === 0) {
+          if (rule.nodes.length === 0) {
             rule.remove()
           }
         }
@@ -49,7 +65,6 @@ module.exports = postcss.plugin('postcss-nativescript', () => {
     })
   }
 })
-
 
 const supportedProperties = {
   'color': true,
