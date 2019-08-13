@@ -25,7 +25,7 @@ function isSupportedRule(selector) {
   return true
 }
 
-module.exports = postcss.plugin('postcss-nativescript', () => {
+module.exports = postcss.plugin('postcss-nativescript', (options = {}) => {
   return root => {
     root.walkRules(rule => {
       if (rule.parent.name === 'media') {
@@ -53,8 +53,14 @@ module.exports = postcss.plugin('postcss-nativescript', () => {
           }
         }
 
+        // allow using rem values (default unit in tailwind)
+        if (decl.value.includes('rem')) {
+          options.debug && console.log('replacing rem value', decl.prop, decl.value, '=>', '' + (parseFloat(decl.value) * 16))
+          decl.value = '' + (parseFloat(decl.value) * 16)
+        }
+
         if (!isSupportedProperty(decl.prop, decl.value)) {
-          // console.log('removing ', decl.prop, decl.value)
+          options.debug && console.log('removing ', decl.prop, decl.value)
           rule.removeChild(decl)
 
           if (rule.nodes.length === 0) {
