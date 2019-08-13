@@ -3,6 +3,9 @@
   "version": "1.1.0",
   "description": "A tailwind build which works in NativeScript",
   "main": "index.js",
+  "bin": {
+    "nativescript-tailwind": "build.js"
+  },
   "scripts": {
     "build": "node build.js"
   },
@@ -17,7 +20,7 @@
   "author": "Igor Randjelovic",
   "license": "MIT",
   "devDependencies": {
-    "postcss": "latest",
-    "tailwindcss": "^1.0.0-beta.8"
+    "postcss": "^7.0.16",
+    "tailwindcss": "^1.0.0"
   }
 }
