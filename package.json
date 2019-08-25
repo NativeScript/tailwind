@@ -18,6 +18,19 @@
     "tailwind"
   ],
   "author": "Igor Randjelovic",
+   "nativescript": {
+    "platforms": {
+      "android": "*",
+      "ios": "*"
+    },
+    "plugin": {
+      "nan": "true",
+      "pan": "true",
+      "core3": "true",
+      "vue": "true",
+      "category": "Developer"
+    },
+  },
   "license": "MIT",
   "devDependencies": {
     "postcss": "^7.0.16",
