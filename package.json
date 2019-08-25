@@ -18,7 +18,7 @@
     "tailwind"
   ],
   "author": "Igor Randjelovic",
-   "nativescript": {
+  "nativescript": {
     "platforms": {
       "android": "*",
       "ios": "*"
