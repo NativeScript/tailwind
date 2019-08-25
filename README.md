@@ -4,10 +4,17 @@ Like using Tailwind? You can use it in NativeScript with a little help from this
 
 # Usage
 
-There are a couple ways you can use this:
+First, install the package into your project
+
+```bash
+npm install --save nativescript-tailwind
+```
+
+Then you can use it in a couple ways:
  1. [Pre Built CSS](#1-pre-built-css) (Quickest for protyping)
  2. [Build the CSS based on your own config](#2-build-the-css-based-on-your-own-config)
  3. [Use as a PostCSS plugin](#3-use-as-a-postcss-plugin) (Recommended)
+
 
 ## 1. Pre Built CSS
 
