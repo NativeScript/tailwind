@@ -15,7 +15,11 @@
   "repository": "https://github.com/rigor789/nativescript-tailwind",
   "keywords": [
     "nativescript",
-    "tailwind"
+    "nativescript-vue",
+    "tailwind",
+    "tailwindcss",
+    "styling",
+    "css"
   ],
   "author": "Igor Randjelovic",
   "nativescript": {
@@ -29,11 +33,11 @@
       "core3": "true",
       "vue": "true",
       "category": "Developer"
-    },
+    }
   },
   "license": "MIT",
   "devDependencies": {
-    "postcss": "^7.0.16",
-    "tailwindcss": "^1.0.0"
+    "postcss": "^7.0.17",
+    "tailwindcss": "^1.1.2"
   }
 }
