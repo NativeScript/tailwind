@@ -1,6 +1,6 @@
 {
   "name": "nativescript-tailwind",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A tailwind build which works in NativeScript",
   "main": "removeUnsupported.js",
   "bin": {
