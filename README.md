@@ -1,6 +1,6 @@
 # nativescript-tailwind
 
-Like using Tailwind? You can use it in NativeScript with a little help from this package! 
+Like using [Tailwind](https://tailwindcss.com/)? You can use it in NativeScript with a little help from this package! 
 
 # Usage
 
