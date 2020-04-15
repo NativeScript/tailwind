@@ -18,11 +18,15 @@ function isSupportedProperty(prop, val = null) {
 }
 
 function isSupportedRule(selector) {
-  if (selector.endsWith(':hover') || selector.endsWith(':focus')) {
+  if (selector.includes(':hover')) {
     return false
   }
 
   return true
+}
+
+function isPlaceholderPseudoSelector(selector) {
+  return selector.includes('::placeholder')
 }
 
 module.exports = postcss.plugin('postcss-nativescript', (options = {}) => {
@@ -34,6 +38,24 @@ module.exports = postcss.plugin('postcss-nativescript', (options = {}) => {
 
       if (!isSupportedRule(rule.selector)) {
         rule.remove()
+      }
+
+      if(isPlaceholderPseudoSelector(rule.selector)) {
+        const placeholderSelectors = []
+        rule.selectors.forEach(selector => {
+          if(isPlaceholderPseudoSelector(selector)) {
+            placeholderSelectors.push(selector.replace(/::placeholder/g, ''))
+          }
+        })
+        if(placeholderSelectors.length) {
+          rule.selectors = placeholderSelectors
+          rule.walkDecls(decl => {
+            if(decl.prop === 'color') {
+              decl.replaceWith(decl.clone({ prop: 'placeholder-color'}))
+            }
+          })
+        }
+        // rule.selector.replace('::placeholder', '')
       }
 
       rule.walkDecls(decl => {
