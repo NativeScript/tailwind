@@ -1,5 +1,7 @@
 const postcss = require('postcss')
 
+const remRE = /\d?\.?\d+\s*rem/g
+
 function isSupportedProperty(prop, val = null) {
   const rules = supportedProperties[prop]
   if (!rules) return false
@@ -29,7 +31,7 @@ function isPlaceholderPseudoSelector(selector) {
   return selector.includes('::placeholder')
 }
 
-module.exports = postcss.plugin('postcss-nativescript', (options = {}) => {
+module.exports = postcss.plugin('postcss-nativescript', (options = {debug: true}) => {
   return root => {
     root.walkRules(rule => {
       if (rule.parent.name === 'media') {
@@ -40,29 +42,36 @@ module.exports = postcss.plugin('postcss-nativescript', (options = {}) => {
         rule.remove()
       }
 
-      if(isPlaceholderPseudoSelector(rule.selector)) {
+      if (isPlaceholderPseudoSelector(rule.selector)) {
         const placeholderSelectors = []
         rule.selectors.forEach(selector => {
-          if(isPlaceholderPseudoSelector(selector)) {
+          if (isPlaceholderPseudoSelector(selector)) {
             placeholderSelectors.push(selector.replace(/::placeholder/g, ''))
           }
         })
-        if(placeholderSelectors.length) {
+        if (placeholderSelectors.length) {
           rule.selectors = placeholderSelectors
           rule.walkDecls(decl => {
-            if(decl.prop === 'color') {
-              decl.replaceWith(decl.clone({ prop: 'placeholder-color'}))
+            if (decl.prop === 'color') {
+              decl.replaceWith(decl.clone({prop: 'placeholder-color'}))
             }
           })
         }
         // rule.selector.replace('::placeholder', '')
       }
 
+      // replace space and divide selectors to use a simpler selector that works in ns
+      if (rule.selector.includes(':not(template) ~ :not(template)')) {
+        rule.selectors = rule.selectors.map(selector => {
+          return selector.replace(':not(template) ~ :not(template)', '* + *')
+        })
+      }
+
       rule.walkDecls(decl => {
         if (decl.prop === 'visibility') {
           switch (decl.value) {
             case 'hidden':
-              decl.replaceWith(decl.clone({ value: 'collapse'}))
+              decl.replaceWith(decl.clone({value: 'collapse'}))
               return
           }
         }
@@ -70,19 +79,32 @@ module.exports = postcss.plugin('postcss-nativescript', (options = {}) => {
         if (decl.prop === 'vertical-align') {
           switch (decl.value) {
             case 'middle':
-              decl.replaceWith(decl.clone({ value: 'center'}))
+              decl.replaceWith(decl.clone({value: 'center'}))
               return
           }
         }
 
         // allow using rem values (default unit in tailwind)
         if (decl.value.includes('rem')) {
-          options.debug && console.log('replacing rem value', decl.prop, decl.value, '=>', '' + (parseFloat(decl.value) * 16))
-          decl.value = '' + (parseFloat(decl.value) * 16)
+          decl.value = decl.value.replace(remRE, (match, offset, value) => {
+            const converted = '' + (parseFloat(match) * 16)
+
+            options.debug && console.log('replacing rem value', {
+              match,
+              offset,
+              value,
+              converted
+            })
+
+            return converted
+          })
+          options.debug && console.log({
+            final: decl.value
+          })
         }
 
-        if (!isSupportedProperty(decl.prop, decl.value)) {
-          options.debug && console.log('removing ', decl.prop, decl.value)
+        if (!decl.prop.startsWith('--') && !isSupportedProperty(decl.prop, decl.value)) {
+          // options.debug && console.log('removing ', decl.prop, decl.value)
           rule.removeChild(decl)
 
           if (rule.nodes.length === 0) {
