@@ -31,7 +31,7 @@ function isPlaceholderPseudoSelector(selector) {
   return selector.includes('::placeholder')
 }
 
-module.exports = postcss.plugin('postcss-nativescript', (options = {debug: true}) => {
+module.exports = postcss.plugin('postcss-nativescript', (options = {debug: false}) => {
   return root => {
     root.walkRules(rule => {
       if (rule.parent.name === 'media') {
