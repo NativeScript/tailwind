@@ -70,7 +70,7 @@ module.exports = {
 For an example, see [Demo](https://github.com/rigor789/demo-nativescript-vue-tailwind)
 
 The changes compared to a fresh app:
- * Installed deps: `npm i postcss postcss-loader tailwindcss nativescript-tailwind`
+ * Installed deps: `npm i postcss postcss-loader tailwindcss nativescript-tailwind --save-dev`
  * Added  `tailwind.config.js` with `npx tailwindcss init` + added the purge option manually
  * Added `postcss.config.js`
  * Edited `app.css` to include tailwind components and utilities. (base is not used in NativeScript, so it's left out from the css)
