@@ -54,20 +54,73 @@ npx nativescript-tailwind tailwind.config.js
 
 If you're using PostCSS, you can [install tailwind according to their official docs](https://tailwindcss.com/docs/installation/), and then include the `nativescript-tailwind` postcss plugin.
 
-```js
-// postcss.config.js
+### Fresh install for scss 
+-------
 
-module.exports = {
-  plugins: [
-    // ...
-    require('tailwindcss'),
-    require('nativescript-tailwind'),
-    // ...
-  ]
-}
+1- Install Packages 
+with yarn 
+```bash 
+yarn add tailwindcss nativescript-tailwind postcss postcss-loader --dev
 ```
+or using npm
+```bash
+npm i postcss postcss-loader tailwindcss nativescript-tailwind --save-dev
+``` 
+2- Add these lines to `app.scss`
+```scss
++ @import "tailwindcss/components";
++ @import "tailwindcss/utilities";
+```
+3- Remove core theme lines
+```scss
+- @import '~@nativescript/theme/core';
+- @import '~@nativescript/theme/grey';
+```
+4- Add postcss-loader to your `webpack.config.js` file
 
-For an example, see [Demo](https://github.com/rigor789/demo-nativescript-vue-tailwind)
+Search for `test: /[\/|\\]app\.scss$/,` 
+
+Replace **use** array 
+```js
+              use: [
+                  'nativescript-dev-webpack/style-hot-loader',
+                  {
+                      loader: "nativescript-dev-webpack/css2json-loader",
+                      options: { useForImports: true }
+                  },
+                  'sass-loader',
+              ],
+```
+with 
+```js
+              use: [
+                  'nativescript-dev-webpack/style-hot-loader',
+                  {
+                      loader: "nativescript-dev-webpack/css2json-loader",
+                      options: { useForImports: true }
+                  },
+                  'sass-loader',{
+                      loader: 'postcss-loader',
+                      options: {
+                        ident: 'postcss',
+                        plugins: [
+                          require('tailwindcss'),
+                          require('autoprefixer'),
+                        ],
+                      },
+                    },
+              ],
+```
+5- Test tailwind class 
+
+ `<Label class="font-bold text-red-500" text="RED TEXT" />`
+
+
+#### For an example, see [Demo](https://github.com/rigor789/demo-nativescript-vue-tailwind)
+
+
+<details><summary> <h3>Fresh install for css </h3></summary>
+<p>
 
 The changes compared to a fresh app:
  * Installed deps: `npm i postcss postcss-loader tailwindcss nativescript-tailwind --save-dev`
@@ -81,3 +134,7 @@ To enable purge when building for production, `NODE_ENV` must be set to `product
 ```bash
 $ NODE_ENV=production tns build android --production --...
 ```
+
+</p>
+</details>
+
