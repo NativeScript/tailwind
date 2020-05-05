@@ -13,7 +13,7 @@ npm install --save nativescript-tailwind
 Then you can use it in a couple ways:
  1. [Pre Built CSS](#1-pre-built-css) (Quickest for protyping)
  2. [Build the CSS based on your own config](#2-build-the-css-based-on-your-own-config)
- 3. [Use as a PostCSS plugin](#3-use-as-a-postcss-plugin) (Recommended)
+ 3. [Use as a PostCSS plugin](#3-use-as-a-postcss-plugin) (**Recommended**)
 
 
 ## 1. Pre Built CSS
@@ -54,87 +54,162 @@ npx nativescript-tailwind tailwind.config.js
 
 If you're using PostCSS, you can [install tailwind according to their official docs](https://tailwindcss.com/docs/installation/), and then include the `nativescript-tailwind` postcss plugin.
 
-### Fresh install for scss 
--------
-
-1- Install Packages 
-with yarn 
-```bash 
-yarn add tailwindcss nativescript-tailwind postcss postcss-loader --dev
-```
-or using npm
-```bash
-npm i postcss postcss-loader tailwindcss nativescript-tailwind --save-dev
-``` 
-2- Add these lines to `app.scss`
-```scss
-+ @import "tailwindcss/components";
-+ @import "tailwindcss/utilities";
-```
-3- Remove core theme lines
-```scss
-- @import '~@nativescript/theme/core';
-- @import '~@nativescript/theme/grey';
-```
-4- Add postcss-loader to your `webpack.config.js` file
-
-Search for `test: /[\/|\\]app\.scss$/,` 
-
-Replace **use** array 
-```js
-              use: [
-                  'nativescript-dev-webpack/style-hot-loader',
-                  {
-                      loader: "nativescript-dev-webpack/css2json-loader",
-                      options: { useForImports: true }
-                  },
-                  'sass-loader',
-              ],
-```
-with 
-```js
-              use: [
-                  'nativescript-dev-webpack/style-hot-loader',
-                  {
-                      loader: "nativescript-dev-webpack/css2json-loader",
-                      options: { useForImports: true }
-                  },
-                  'sass-loader',{
-                      loader: 'postcss-loader',
-                      options: {
-                        ident: 'postcss',
-                        plugins: [
-                          require('tailwindcss'),
-                          require('autoprefixer'),
-                        ],
-                      },
-                    },
-              ],
-```
-5- Test tailwind class 
-
- `<Label class="font-bold text-red-500" text="RED TEXT" />`
-
-
-#### For an example, see [Demo](https://github.com/rigor789/demo-nativescript-vue-tailwind)
-
-
-<details><summary> <h3>Fresh install for css </h3></summary>
-<p>
-
-The changes compared to a fresh app:
- * Installed deps: `npm i postcss postcss-loader tailwindcss nativescript-tailwind --save-dev`
- * Added  `tailwind.config.js` with `npx tailwindcss init` + added the purge option manually
- * Added `postcss.config.js`
- * Edited `app.css` to include tailwind components and utilities. (base is not used in NativeScript, so it's left out from the css)
- * Added 'postcss-loader' to all css rules in `webpack.config.js`
+<details>
+ <summary>With CSS</summary>
  
-To enable purge when building for production, `NODE_ENV` must be set to `production`, for example
+ *1. Install dependencies*
+ 
+ ```bash
+ $ yarn add -D tailwindcss nativescript-tailwind postcss postcss-loader
+ $ # or using npm
+ $ npm install --save-dev tailwindcss nativescript-tailwind postcss postcss-loader
+ ```
+ 
+ *2. Initialize a `tailwind.config.js` (optional)*
+ 
+ To create a `tailwind.config.js` run
+ ```bash
+ $ npx tailwindcss init
+ ```
+ This will create a blank `tailwind.config.js` where you will be able to tweak the default configuration.
+ 
+ *3. Create a `postcss.config.js`*
+ 
+ In the root of your project, create a new file and name it `postcss.config.js` with the following contents
+ ```js
+ module.exports = {
+    plugins: [
+        require('tailwindcss'),
+        require('nativescript-tailwind')
+    ]
+ }
+ ```
+ 
+ *4. Add tailwind to your `css`*
+ 
+ Replace your `app.css` contents with the following 2 tailwind at-rules to pull in tailwind.
+ 
+ > **Note:** if you already have custom css in your `app.css` you don't have to delete it, the above is only true for fresh projects.
+ 
+ ```scss
+ @tailwind components;
+ @tailwind utilities;
+ ```
+ 
+ *5. Update `webpack.config.js` to use PostCSS*
+ 
+ Find the section of the config that defines the rules/loaders for different file types.
+ To quickly find this block - search for `test: /[\/|\\]app\.css$/`.
+ 
+ For every css block, add the `postcss-loader` to the list of loaders, for example:
+ ```diff
+ {
+     test: /[\/|\\]app\.css$/,
+     use: [
+         'nativescript-dev-webpack/style-hot-loader',
+         {
+             loader: "nativescript-dev-webpack/css2json-loader",
+             options: { useForImports: true }
+         },
++       'postcss-loader',
+     ],
+ }
+ ```
+ 
+ *6. Test if everything works!*
+ 
+ Add some tailwind classes to your layout
+ ```html
+ <Label class="font-bold text-red-500" text="this text should be bold and red!" />
+ ```
+ And run the app. If the label is bold and red - everything is working, happy tailwinding!
+ 
+</details>
+
+<details>
+ <summary>With SCSS</summary>
+ 
+ *1. Install dependencies*
+ 
+ ```bash
+ $ yarn add -D tailwindcss nativescript-tailwind postcss postcss-loader
+ $ # or using npm
+ $ npm install --save-dev tailwindcss nativescript-tailwind postcss postcss-loader
+ ```
+ 
+ *2. Initialize a `tailwind.config.js` (optional)*
+ 
+ To create a `tailwind.config.js` run
+ ```bash
+ $ npx tailwindcss init
+ ```
+ This will create a blank `tailwind.config.js` where you will be able to tweak the default configuration.
+ 
+ *3. Create a `postcss.config.js`*
+ 
+ In the root of your project, create a new file and name it `postcss.config.js` with the following contents
+ ```js
+ module.exports = {
+    plugins: [
+        require('tailwindcss'),
+        require('nativescript-tailwind')
+    ]
+ }
+ ```
+ 
+ *4. Add tailwind to your `scss`*
+ 
+ Replace your `app.scss` contents with the following 2 tailwind at-rules to pull in tailwind.
+ 
+ > **Note:** if you already have custom css in your `app.scss` you don't have to delete it, the above is only true for fresh projects.
+ 
+ ```scss
+ @tailwind components;
+ @tailwind utilities;
+ ```
+ 
+ *5. Update `webpack.config.js` to use PostCSS*
+ 
+ Find the section of the config that defines the rules/loaders for different file types.
+ To quickly find this block - search for `test: /[\/|\\]app\.css$/`.
+ 
+ For every css block, add the `postcss-loader` to the list of loaders, for example:
+ ```diff
+ {
+     test: /[\/|\\]app\.scss$/,
+     use: [
+         'nativescript-dev-webpack/style-hot-loader',
+         {
+             loader: "nativescript-dev-webpack/css2json-loader",
+             options: { useForImports: true }
+         },
+         'sass-loader',
++       'postcss-loader'
+     ],
+ }
+ ```
+ 
+ *6. Test if everything works!*
+ 
+ Add some tailwind classes to your layout
+ ```html
+ <Label class="font-bold text-red-500" text="this text should be bold and red!" />
+ ```
+ And run the app. If the label is bold and red - everything is working, happy tailwinding!
+ 
+</details>
+
+**For a runnable example with CSS, see the [Demo App](https://github.com/rigor789/demo-nativescript-vue-tailwind)**
+
+## Purging unused CSS
+
+[Read more about purging on the Tailwind docs](https://tailwindcss.com/docs/controlling-file-size/)
+
+To enable purging when building for production, `NODE_ENV` must be set to `production`
 
 ```bash
-$ NODE_ENV=production tns build android --production --...
+$ NODE_ENV=production tns build android --production ...
+$ # or
+$ NODE_ENV=production tns build ios --production ...
 ```
-
-</p>
-</details>
 
