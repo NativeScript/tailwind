@@ -2,6 +2,13 @@
 
 Like using [Tailwind](https://tailwindcss.com/)? You can use it in NativeScript with a little help from this package! 
 
+```html
+<Label text="TailwindCSS is awesome!" 
+      class="align-middle text-center bg-blue-200 text-blue-600 px-2 py-1 rounded-full" />
+```
+![TailwindCss is awesome!](https://user-images.githubusercontent.com/879060/81098285-73e3ad80-8f09-11ea-8cfa-7e2ec2eebcde.png)
+
+
 # Usage
 
 First, install the package into your project
