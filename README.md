@@ -52,7 +52,7 @@ npx nativescript-tailwind tailwind.config.js
 
 ## 3. Use as a PostCSS plugin
 
-If you're using PostCSS, you can [install tailwind according to their official docs](https://tailwindcss.com/docs/installation/), and then include the `nativescript-tailwind` postcss plugin.
+To use tailwind with NativeScript, you need to set up PostCSS, below are 2 guides depending on what css flavor you prefer.
 
 <details>
  <summary>With CSS</summary>
