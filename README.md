@@ -122,6 +122,7 @@ To use tailwind with NativeScript, you need to set up PostCSS, below are 2 guide
      ],
  }
  ```
+ **Make sure you repeat this step for every css rule (4 by default)**
  
  *6. Test if everything works!*
  
@@ -195,6 +196,7 @@ To use tailwind with NativeScript, you need to set up PostCSS, below are 2 guide
      ],
  }
  ```
+ **Make sure you repeat this step for every css rule (4 by default)**
  
  *6. Test if everything works!*
  
