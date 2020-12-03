@@ -13,7 +13,10 @@ const outputFile = path.join(__dirname, `dist/${filename}.css`)
 fs.readFile(inputFile, (err, css) => {
   if (err) throw err
 
-  postcss([tailwind(config), require('./removeUnsupported')])
+  postcss([
+    tailwind(config),
+    require('./removeUnsupported')
+  ])
     .process(css, {
       from: inputFile,
       to: outputFile,
@@ -22,7 +25,7 @@ fs.readFile(inputFile, (err, css) => {
     .then(result => {
       fs.writeFileSync(outputFile, result.css)
       if (result.map) {
-        fs.writeFileSync(`${outputFile}.map`, result.map)
+        fs.writeFileSync(`${outputFile}.map`, result.map.toString())
       }
       return result
     })
