@@ -15,7 +15,8 @@ fs.readFile(inputFile, (err, css) => {
 
   postcss([
     tailwind(config),
-    require('./removeUnsupported')
+    require('./removeUnsupported'),
+    require('./expandAnimations'),
   ])
     .process(css, {
       from: inputFile,
