@@ -10,6 +10,11 @@
     postcss "7.0.32"
     purgecss "^3.0.0"
 
+"@hookun/parse-animation-shorthand@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@hookun/parse-animation-shorthand/-/parse-animation-shorthand-0.1.2.tgz#07194bd265bb6973e9f03e4a7e7f8ddca7e5da2a"
+  integrity sha512-zLk0nzsF6WDjTRpEq7491pFxSPTOTzcGkCqcnHaSiYqZCJ6Nlq05srV331iyP5rqXaRl+QF7vzRhxLTyq+J+Mg==
+
 acorn-node@^1.6.1:
   version "1.8.2"
   resolved "https://registry.yarnpkg.com/acorn-node/-/acorn-node-1.8.2.tgz#114c95d64539e53dede23de8b9d96df7c7ae2af8"
