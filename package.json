@@ -10,7 +10,9 @@
     "build": "node build.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "removeUnsupported.js",
+    "expandAnimations.js"
   ],
   "repository": "https://github.com/rigor789/nativescript-tailwind",
   "keywords": [
