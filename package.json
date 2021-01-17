@@ -40,7 +40,9 @@
   "license": "MIT",
   "devDependencies": {
     "postcss": "^8.0.0",
-    "tailwindcss": "^2.0.0",
+    "tailwindcss": "^2.0.0"
+  },
+  "dependencies": {
     "@hookun/parse-animation-shorthand": "^0.1.2"
   },
   "peerDependencies": {
