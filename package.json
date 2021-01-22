@@ -2,7 +2,7 @@
   "name": "nativescript-tailwind",
   "version": "1.3.0",
   "description": "A tailwind build which works in NativeScript",
-  "main": "removeUnsupported.js",
+  "main": "index.js",
   "bin": {
     "nativescript-tailwind": "build.js"
   },
@@ -10,7 +10,9 @@
     "build": "node build.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "removeUnsupported.js",
+    "expandAnimations.js"
   ],
   "repository": "https://github.com/rigor789/nativescript-tailwind",
   "keywords": [
@@ -38,7 +40,9 @@
   "license": "MIT",
   "devDependencies": {
     "postcss": "^8.0.0",
-    "tailwindcss": "^2.0.0",
+    "tailwindcss": "^2.0.0"
+  },
+  "dependencies": {
     "@hookun/parse-animation-shorthand": "^0.1.2"
   },
   "peerDependencies": {
