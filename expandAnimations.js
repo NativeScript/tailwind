@@ -9,6 +9,9 @@ module.exports = (options = { debug: false }) => {
       // with    animation-*:
       if (decl.prop === "animation") {
         const styles = parseSingle(decl.value);
+        if (styles.duration && Number.isInteger(styles.duration)) {
+          styles.duration = `${styles.duration / 1000}s`;
+        }
         Object.entries(styles)
           .filter(([, value]) => typeof value === "object")
           .map(([key, value]) => [

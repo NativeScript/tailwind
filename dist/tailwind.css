@@ -14400,26 +14400,26 @@
   animation-name: spin;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-  animation-duration: 1000
+  animation-duration: 1s
 }
 
 .animate-ping {
   animation-name: ping;
   animation-iteration-count: infinite;
   animation-timing-function: cubic-bezier(0,0,.2,1);
-  animation-duration: 1000
+  animation-duration: 1s
 }
 
 .animate-pulse {
   animation-name: pulse;
   animation-iteration-count: infinite;
   animation-timing-function: cubic-bezier(.4,0,.6,1);
-  animation-duration: 2000
+  animation-duration: 2s
 }
 
 .animate-bounce {
   animation-name: bounce;
   animation-iteration-count: infinite;
-  animation-duration: 1000
+  animation-duration: 1s
 }
 /*# sourceMappingURL=tailwind.css.map */
