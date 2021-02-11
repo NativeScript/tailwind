@@ -30,7 +30,7 @@ function isPlaceholderPseudoSelector(selector) {
 }
 
 /**
- * @param {@} options 
+ * @param {@} options
  * @returns {import('postcss').Plugin}
  */
 module.exports = (options = {debug: false}) => {
@@ -47,12 +47,12 @@ module.exports = (options = {debug: false}) => {
     Rule(rule) {
       // remove empty rules
       if (rule.nodes.length === 0) {
-        rule.remove()
+        return rule.remove()
       }
 
       // remove rules with unsupported selectors
       if (!isSupportedSelector(rule.selector)) {
-        rule.remove()
+        return rule.remove()
       }
 
       // convert ::placeholder pseudo selector
@@ -88,8 +88,7 @@ module.exports = (options = {debug: false}) => {
       if (decl.prop === 'visibility') {
         switch (decl.value) {
           case 'hidden':
-            decl.replaceWith(decl.clone({value: 'collapse'}))
-            return
+            return decl.replaceWith(decl.clone({value: 'collapse'}))
         }
       }
 
@@ -98,8 +97,7 @@ module.exports = (options = {debug: false}) => {
       if (decl.prop === 'vertical-align') {
         switch (decl.value) {
           case 'middle':
-            decl.replaceWith(decl.clone({value: 'center'}))
-            return
+            return decl.replaceWith(decl.clone({value: 'center'}))
         }
       }
 
@@ -111,7 +109,7 @@ module.exports = (options = {debug: false}) => {
         'tw-slashed-zero',
         'tw-numeric'
       ].some(varName => decl.prop.startsWith(`--${varName}`))) {
-        decl.remove()
+        return decl.remove()
       }
 
       // Convert em/rem values to device pixel values
@@ -138,7 +136,7 @@ module.exports = (options = {debug: false}) => {
       // remove unsupported properties
       if (!decl.prop.startsWith('--') && !isSupportedProperty(decl.prop, decl.value)) {
         // options.debug && console.log('removing ', decl.prop, decl.value)
-        decl.remove()
+        return decl.remove()
       }
     },
   }

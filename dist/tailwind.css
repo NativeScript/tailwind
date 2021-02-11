@@ -1,5 +1,5 @@
 /**
-* Tailwind build which works with NativeScript
+* Tailwind build for NativeScript
 */
 
 .container {
@@ -14422,4 +14422,5 @@
   animation-iteration-count: infinite;
   animation-duration: 1s
 }
+
 /*# sourceMappingURL=tailwind.css.map */
