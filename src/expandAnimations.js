@@ -1,6 +1,9 @@
-const postcss = require("postcss");
 const { parseSingle, serialize } = require("@hookun/parse-animation-shorthand");
 
+/**
+ * @param {@} options 
+ * @returns {import('postcss').Plugin}
+ */
 module.exports = (options = { debug: false }) => {
   return {
     postcssPlugin: "postcss-nativescript-animations",

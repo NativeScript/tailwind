@@ -29,6 +29,10 @@ function isPlaceholderPseudoSelector(selector) {
   return selector.includes('::placeholder')
 }
 
+/**
+ * @param {@} options 
+ * @returns {import('postcss').Plugin}
+ */
 module.exports = (options = {debug: false}) => {
   return {
     postcssPlugin: 'postcss-nativescript',
