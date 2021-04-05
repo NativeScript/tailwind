@@ -6,14 +6,17 @@ const tailwind = require('tailwindcss')
 
 const filename = 'tailwind'
 const args = process.argv.slice(2)
-const config = args[0] || path.join(__dirname, 'tailwind.js')
-const inputFile = path.join(__dirname, `${filename}.css`)
+const config = args[0] || path.join(__dirname, 'tailwind.config.js')
+const inputFile = path.join(__dirname, `src/${filename}.css`)
 const outputFile = path.join(__dirname, `dist/${filename}.css`)
 
 fs.readFile(inputFile, (err, css) => {
   if (err) throw err
 
-  postcss([tailwind(config), require('./removeUnsupported')])
+  postcss([
+    tailwind(config),
+    require('./src/index'),
+  ])
     .process(css, {
       from: inputFile,
       to: outputFile,
@@ -22,7 +25,7 @@ fs.readFile(inputFile, (err, css) => {
     .then(result => {
       fs.writeFileSync(outputFile, result.css)
       if (result.map) {
-        fs.writeFileSync(`${outputFile}.map`, result.map)
+        fs.writeFileSync(`${outputFile}.map`, result.map.toString())
       }
       return result
     })
