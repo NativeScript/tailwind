@@ -6114,10 +6114,6 @@
   flex-wrap: nowrap
 }
 
-.place-items-auto {
-  place-items: auto
-}
-
 .place-items-start {
   place-items: start
 }
@@ -6244,10 +6240,6 @@
 
 .self-stretch {
   align-self: stretch
-}
-
-.justify-items-auto {
-  justify-items: auto
 }
 
 .justify-items-start {
@@ -11051,6 +11043,118 @@
   --tw-placeholder-opacity: 1
 }
 
+.shadow-sm {
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+
+.shadow {
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+
+.shadow-md {
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+
+.shadow-lg {
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+
+.shadow-xl {
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+
+.shadow-2xl {
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+
+.shadow-inner {
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+
+.shadow-none {
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+
+.focus\:shadow-sm:focus {
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+
+.focus\:shadow:focus {
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+
+.focus\:shadow-md:focus {
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+
+.focus\:shadow-lg:focus {
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+
+.focus\:shadow-xl:focus {
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+
+.focus\:shadow-2xl:focus {
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+
+.focus\:shadow-inner:focus {
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+
+.focus\:shadow-none:focus {
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+
+.ring-0 {
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)
+}
+
+.ring-1 {
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)
+}
+
+.ring-2 {
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)
+}
+
+.ring-4 {
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)
+}
+
+.ring-8 {
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)
+}
+
+.ring {
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)
+}
+
+.focus\:ring-0:focus {
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)
+}
+
+.focus\:ring-1:focus {
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)
+}
+
+.focus\:ring-2:focus {
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)
+}
+
+.focus\:ring-4:focus {
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)
+}
+
+.focus\:ring-8:focus {
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)
+}
+
+.focus\:ring:focus {
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)
+}
+
 .text-left {
   text-align: left
 }
@@ -14421,6 +14525,502 @@
   animation-name: bounce;
   animation-iteration-count: infinite;
   animation-duration: 1s
+}
+
+.filter {
+  --tw-blur: var(--tw-empty,/*!*/ /*!*/);
+  --tw-brightness: var(--tw-empty,/*!*/ /*!*/);
+  --tw-contrast: var(--tw-empty,/*!*/ /*!*/);
+  --tw-grayscale: var(--tw-empty,/*!*/ /*!*/);
+  --tw-hue-rotate: var(--tw-empty,/*!*/ /*!*/);
+  --tw-invert: var(--tw-empty,/*!*/ /*!*/);
+  --tw-saturate: var(--tw-empty,/*!*/ /*!*/);
+  --tw-sepia: var(--tw-empty,/*!*/ /*!*/);
+  --tw-drop-shadow: var(--tw-empty,/*!*/ /*!*/)
+}
+
+.blur-0 {
+  --tw-blur: blur(0)
+}
+
+.blur-sm {
+  --tw-blur: blur(4px)
+}
+
+.blur {
+  --tw-blur: blur(8px)
+}
+
+.blur-md {
+  --tw-blur: blur(12px)
+}
+
+.blur-lg {
+  --tw-blur: blur(16px)
+}
+
+.blur-xl {
+  --tw-blur: blur(24px)
+}
+
+.blur-2xl {
+  --tw-blur: blur(40px)
+}
+
+.blur-3xl {
+  --tw-blur: blur(64px)
+}
+
+.brightness-0 {
+  --tw-brightness: brightness(0)
+}
+
+.brightness-50 {
+  --tw-brightness: brightness(.5)
+}
+
+.brightness-75 {
+  --tw-brightness: brightness(.75)
+}
+
+.brightness-90 {
+  --tw-brightness: brightness(.9)
+}
+
+.brightness-95 {
+  --tw-brightness: brightness(.95)
+}
+
+.brightness-100 {
+  --tw-brightness: brightness(1)
+}
+
+.brightness-105 {
+  --tw-brightness: brightness(1.05)
+}
+
+.brightness-110 {
+  --tw-brightness: brightness(1.1)
+}
+
+.brightness-125 {
+  --tw-brightness: brightness(1.25)
+}
+
+.brightness-150 {
+  --tw-brightness: brightness(1.5)
+}
+
+.brightness-200 {
+  --tw-brightness: brightness(2)
+}
+
+.contrast-0 {
+  --tw-contrast: contrast(0)
+}
+
+.contrast-50 {
+  --tw-contrast: contrast(.5)
+}
+
+.contrast-75 {
+  --tw-contrast: contrast(.75)
+}
+
+.contrast-100 {
+  --tw-contrast: contrast(1)
+}
+
+.contrast-125 {
+  --tw-contrast: contrast(1.25)
+}
+
+.contrast-150 {
+  --tw-contrast: contrast(1.5)
+}
+
+.contrast-200 {
+  --tw-contrast: contrast(2)
+}
+
+.drop-shadow-sm {
+  --tw-drop-shadow: drop-shadow(0 1px 1px rgba(0,0,0,0.05))
+}
+
+.drop-shadow {
+  --tw-drop-shadow: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1)) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06))
+}
+
+.drop-shadow-md {
+  --tw-drop-shadow: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.07)) drop-shadow(0 2px 2px rgba(0, 0, 0, 0.06))
+}
+
+.drop-shadow-lg {
+  --tw-drop-shadow: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.04)) drop-shadow(0 4px 3px rgba(0, 0, 0, 0.1))
+}
+
+.drop-shadow-xl {
+  --tw-drop-shadow: drop-shadow(0 20px 13px rgba(0, 0, 0, 0.03)) drop-shadow(0 8px 5px rgba(0, 0, 0, 0.08))
+}
+
+.drop-shadow-2xl {
+  --tw-drop-shadow: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.15))
+}
+
+.drop-shadow-none {
+  --tw-drop-shadow: drop-shadow(0 0 #0000)
+}
+
+.grayscale-0 {
+  --tw-grayscale: grayscale(0)
+}
+
+.grayscale {
+  --tw-grayscale: grayscale(100%)
+}
+
+.hue-rotate-0 {
+  --tw-hue-rotate: hue-rotate(0deg)
+}
+
+.hue-rotate-15 {
+  --tw-hue-rotate: hue-rotate(15deg)
+}
+
+.hue-rotate-30 {
+  --tw-hue-rotate: hue-rotate(30deg)
+}
+
+.hue-rotate-60 {
+  --tw-hue-rotate: hue-rotate(60deg)
+}
+
+.hue-rotate-90 {
+  --tw-hue-rotate: hue-rotate(90deg)
+}
+
+.hue-rotate-180 {
+  --tw-hue-rotate: hue-rotate(180deg)
+}
+
+.-hue-rotate-180 {
+  --tw-hue-rotate: hue-rotate(-180deg)
+}
+
+.-hue-rotate-90 {
+  --tw-hue-rotate: hue-rotate(-90deg)
+}
+
+.-hue-rotate-60 {
+  --tw-hue-rotate: hue-rotate(-60deg)
+}
+
+.-hue-rotate-30 {
+  --tw-hue-rotate: hue-rotate(-30deg)
+}
+
+.-hue-rotate-15 {
+  --tw-hue-rotate: hue-rotate(-15deg)
+}
+
+.invert-0 {
+  --tw-invert: invert(0)
+}
+
+.invert {
+  --tw-invert: invert(100%)
+}
+
+.saturate-0 {
+  --tw-saturate: saturate(0)
+}
+
+.saturate-50 {
+  --tw-saturate: saturate(.5)
+}
+
+.saturate-100 {
+  --tw-saturate: saturate(1)
+}
+
+.saturate-150 {
+  --tw-saturate: saturate(1.5)
+}
+
+.saturate-200 {
+  --tw-saturate: saturate(2)
+}
+
+.sepia-0 {
+  --tw-sepia: sepia(0)
+}
+
+.sepia {
+  --tw-sepia: sepia(100%)
+}
+
+.backdrop-filter {
+  --tw-backdrop-blur: var(--tw-empty,/*!*/ /*!*/);
+  --tw-backdrop-brightness: var(--tw-empty,/*!*/ /*!*/);
+  --tw-backdrop-contrast: var(--tw-empty,/*!*/ /*!*/);
+  --tw-backdrop-grayscale: var(--tw-empty,/*!*/ /*!*/);
+  --tw-backdrop-hue-rotate: var(--tw-empty,/*!*/ /*!*/);
+  --tw-backdrop-invert: var(--tw-empty,/*!*/ /*!*/);
+  --tw-backdrop-opacity: var(--tw-empty,/*!*/ /*!*/);
+  --tw-backdrop-saturate: var(--tw-empty,/*!*/ /*!*/);
+  --tw-backdrop-sepia: var(--tw-empty,/*!*/ /*!*/)
+}
+
+.backdrop-blur-0 {
+  --tw-backdrop-blur: blur(0)
+}
+
+.backdrop-blur-sm {
+  --tw-backdrop-blur: blur(4px)
+}
+
+.backdrop-blur {
+  --tw-backdrop-blur: blur(8px)
+}
+
+.backdrop-blur-md {
+  --tw-backdrop-blur: blur(12px)
+}
+
+.backdrop-blur-lg {
+  --tw-backdrop-blur: blur(16px)
+}
+
+.backdrop-blur-xl {
+  --tw-backdrop-blur: blur(24px)
+}
+
+.backdrop-blur-2xl {
+  --tw-backdrop-blur: blur(40px)
+}
+
+.backdrop-blur-3xl {
+  --tw-backdrop-blur: blur(64px)
+}
+
+.backdrop-brightness-0 {
+  --tw-backdrop-brightness: brightness(0)
+}
+
+.backdrop-brightness-50 {
+  --tw-backdrop-brightness: brightness(.5)
+}
+
+.backdrop-brightness-75 {
+  --tw-backdrop-brightness: brightness(.75)
+}
+
+.backdrop-brightness-90 {
+  --tw-backdrop-brightness: brightness(.9)
+}
+
+.backdrop-brightness-95 {
+  --tw-backdrop-brightness: brightness(.95)
+}
+
+.backdrop-brightness-100 {
+  --tw-backdrop-brightness: brightness(1)
+}
+
+.backdrop-brightness-105 {
+  --tw-backdrop-brightness: brightness(1.05)
+}
+
+.backdrop-brightness-110 {
+  --tw-backdrop-brightness: brightness(1.1)
+}
+
+.backdrop-brightness-125 {
+  --tw-backdrop-brightness: brightness(1.25)
+}
+
+.backdrop-brightness-150 {
+  --tw-backdrop-brightness: brightness(1.5)
+}
+
+.backdrop-brightness-200 {
+  --tw-backdrop-brightness: brightness(2)
+}
+
+.backdrop-contrast-0 {
+  --tw-backdrop-contrast: contrast(0)
+}
+
+.backdrop-contrast-50 {
+  --tw-backdrop-contrast: contrast(.5)
+}
+
+.backdrop-contrast-75 {
+  --tw-backdrop-contrast: contrast(.75)
+}
+
+.backdrop-contrast-100 {
+  --tw-backdrop-contrast: contrast(1)
+}
+
+.backdrop-contrast-125 {
+  --tw-backdrop-contrast: contrast(1.25)
+}
+
+.backdrop-contrast-150 {
+  --tw-backdrop-contrast: contrast(1.5)
+}
+
+.backdrop-contrast-200 {
+  --tw-backdrop-contrast: contrast(2)
+}
+
+.backdrop-grayscale-0 {
+  --tw-backdrop-grayscale: grayscale(0)
+}
+
+.backdrop-grayscale {
+  --tw-backdrop-grayscale: grayscale(100%)
+}
+
+.backdrop-hue-rotate-0 {
+  --tw-backdrop-hue-rotate: hue-rotate(0deg)
+}
+
+.backdrop-hue-rotate-15 {
+  --tw-backdrop-hue-rotate: hue-rotate(15deg)
+}
+
+.backdrop-hue-rotate-30 {
+  --tw-backdrop-hue-rotate: hue-rotate(30deg)
+}
+
+.backdrop-hue-rotate-60 {
+  --tw-backdrop-hue-rotate: hue-rotate(60deg)
+}
+
+.backdrop-hue-rotate-90 {
+  --tw-backdrop-hue-rotate: hue-rotate(90deg)
+}
+
+.backdrop-hue-rotate-180 {
+  --tw-backdrop-hue-rotate: hue-rotate(180deg)
+}
+
+.-backdrop-hue-rotate-180 {
+  --tw-backdrop-hue-rotate: hue-rotate(-180deg)
+}
+
+.-backdrop-hue-rotate-90 {
+  --tw-backdrop-hue-rotate: hue-rotate(-90deg)
+}
+
+.-backdrop-hue-rotate-60 {
+  --tw-backdrop-hue-rotate: hue-rotate(-60deg)
+}
+
+.-backdrop-hue-rotate-30 {
+  --tw-backdrop-hue-rotate: hue-rotate(-30deg)
+}
+
+.-backdrop-hue-rotate-15 {
+  --tw-backdrop-hue-rotate: hue-rotate(-15deg)
+}
+
+.backdrop-invert-0 {
+  --tw-backdrop-invert: invert(0)
+}
+
+.backdrop-invert {
+  --tw-backdrop-invert: invert(100%)
+}
+
+.backdrop-opacity-0 {
+  --tw-backdrop-opacity: opacity(0)
+}
+
+.backdrop-opacity-5 {
+  --tw-backdrop-opacity: opacity(0.05)
+}
+
+.backdrop-opacity-10 {
+  --tw-backdrop-opacity: opacity(0.1)
+}
+
+.backdrop-opacity-20 {
+  --tw-backdrop-opacity: opacity(0.2)
+}
+
+.backdrop-opacity-25 {
+  --tw-backdrop-opacity: opacity(0.25)
+}
+
+.backdrop-opacity-30 {
+  --tw-backdrop-opacity: opacity(0.3)
+}
+
+.backdrop-opacity-40 {
+  --tw-backdrop-opacity: opacity(0.4)
+}
+
+.backdrop-opacity-50 {
+  --tw-backdrop-opacity: opacity(0.5)
+}
+
+.backdrop-opacity-60 {
+  --tw-backdrop-opacity: opacity(0.6)
+}
+
+.backdrop-opacity-70 {
+  --tw-backdrop-opacity: opacity(0.7)
+}
+
+.backdrop-opacity-75 {
+  --tw-backdrop-opacity: opacity(0.75)
+}
+
+.backdrop-opacity-80 {
+  --tw-backdrop-opacity: opacity(0.8)
+}
+
+.backdrop-opacity-90 {
+  --tw-backdrop-opacity: opacity(0.9)
+}
+
+.backdrop-opacity-95 {
+  --tw-backdrop-opacity: opacity(0.95)
+}
+
+.backdrop-opacity-100 {
+  --tw-backdrop-opacity: opacity(1)
+}
+
+.backdrop-saturate-0 {
+  --tw-backdrop-saturate: saturate(0)
+}
+
+.backdrop-saturate-50 {
+  --tw-backdrop-saturate: saturate(.5)
+}
+
+.backdrop-saturate-100 {
+  --tw-backdrop-saturate: saturate(1)
+}
+
+.backdrop-saturate-150 {
+  --tw-backdrop-saturate: saturate(1.5)
+}
+
+.backdrop-saturate-200 {
+  --tw-backdrop-saturate: saturate(2)
+}
+
+.backdrop-sepia-0 {
+  --tw-backdrop-sepia: sepia(0)
+}
+
+.backdrop-sepia {
+  --tw-backdrop-sepia: sepia(100%)
 }
 
 /*# sourceMappingURL=tailwind.css.map */
