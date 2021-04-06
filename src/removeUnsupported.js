@@ -1,5 +1,3 @@
-const postcss = require('postcss')
-
 const remRE = /\d?\.?\d+\s*r?em/g
 
 function isSupportedProperty(prop, val = null) {
@@ -147,6 +145,9 @@ const supportedProperties = {
   'align-content': true,
   'align-items': true,
   'align-self': true,
+  'android-selected-tab-highlight-color': true,
+  'android-elevation': true,
+  'android-dynamic-elevation-offset': true,
   'animation': true,
   'animation-delay': true,
   'animation-direction': true,
@@ -190,6 +191,7 @@ const supportedProperties = {
   'font-style': ['italic', 'normal'],
   'font-weight': true,
   'height': true,
+  'highlight-color': true,
   'horizontal-align': ['left', 'center', 'right', 'stretch'],
   'justify-content': true,
   'justify-items': true,
@@ -203,6 +205,7 @@ const supportedProperties = {
   'margin-top': true,
   'min-height': true,
   'min-width': true,
+  'off-background-color': true,
   'opacity': true,
   'order': true,
   'padding': true,
@@ -214,6 +217,11 @@ const supportedProperties = {
   'placeholder-color': true,
   'place-items': true,
   'place-self': true,
+  'selected-tab-text-color': true,
+  'tab-background-color': true,
+  'tab-text-color': true,
+  'tab-text-font-size': true,
+  'text-transform': true,
   'text-align': ['left', 'center', 'right'],
   'text-decoration': ['none', 'line-through', 'underline'],
   'text-shadow': true,
