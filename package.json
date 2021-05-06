@@ -40,7 +40,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "postcss": "8.1.13",
+    "postcss": "8.2.14",
     "tailwindcss": "^2.1.1"
   },
   "dependencies": {
