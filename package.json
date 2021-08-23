@@ -1,7 +1,7 @@
 {
-  "name": "nativescript-tailwind",
-  "version": "2.0.1",
-  "description": "A tailwind build for NativeScript",
+  "name": "@nativescript/tailwind",
+  "version": "1.0.0-rc.0",
+  "description": "TailwindCSS for NativeScript",
   "main": "src/index.js",
   "bin": {
     "nativescript-tailwind": "build.js"
@@ -40,8 +40,9 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "postcss": "8.1.13",
-    "tailwindcss": "^2.1.1"
+    "@nativescript/webpack": "^5.0.0-rc.4",
+    "postcss": "8.3.6",
+    "tailwindcss": "^2.2.7"
   },
   "dependencies": {
     "@hookun/parse-animation-shorthand": "^0.1.2"
