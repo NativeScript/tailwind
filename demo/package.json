@@ -1,0 +1,17 @@
+{
+  "name": "@nativescript/tailwind-demo-app",
+  "main": "app/app.ts",
+  "version": "1.0.0",
+  "private": "true",
+  "dependencies": {
+    "@nativescript/core": "~8.0.0",
+    "@nativescript/tailwind": "../"
+  },
+  "devDependencies": {
+    "@nativescript/android": "8.0.0",
+    "@nativescript/types": "~8.0.0",
+    "@nativescript/webpack": "rc",
+    "tailwindcss": "^2.2.7",
+    "typescript": "~4.0.0"
+  }
+}

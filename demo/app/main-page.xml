@@ -1,0 +1,11 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
+    <ActionBar title="My App" icon="" class="text-white bg-gray-800" />
+
+    <StackLayout class="p-8 bg-gray-100">
+        <Label text="Tap the button" class="text-3xl text-center text-gray-900" />
+        <Button text="Tap Here" tap="{{ onTap }}" class="mt-4 text-white normal-case bg-blue-500 rounded-full" />
+        <Label text="{{ message }}" class="mt-4 text-xl text-center text-gray-700" textWrap="true" />
+
+        <Label text="Hello" class="mt-[200] text-[#65adf1] text-lg text-center" />
+    </StackLayout>
+</Page>
