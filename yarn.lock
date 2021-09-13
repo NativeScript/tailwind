@@ -212,9 +212,9 @@
   integrity sha512-zLk0nzsF6WDjTRpEq7491pFxSPTOTzcGkCqcnHaSiYqZCJ6Nlq05srV331iyP5rqXaRl+QF7vzRhxLTyq+J+Mg==
 
 "@nativescript/webpack@^5.0.0-rc.4":
-  version "5.0.0-rc.4"
-  resolved "https://registry.yarnpkg.com/@nativescript/webpack/-/webpack-5.0.0-rc.4.tgz#5eaaca41a0df32fba4486aee1ea622143d9e3752"
-  integrity sha512-IA3cJvBcoaqV2RtAbUKKsJIBnmUFjbID9q7eDn/L+6e/BReEz1O4RWg44yARcNiDdUDHAni5lywYd3IIvfdODA==
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@nativescript/webpack/-/webpack-5.0.0.tgz#d9455cb92241cc5a68db2e0719f0b1697cc48ff6"
+  integrity sha512-fOiAxktWB9J8RMtU6Wor9RaNS+SZln/I3hjxYWWD3l9SuX4uWYzAn+xMPhAfFDYtAGUI2YS8nU+Tmub99ok7Gg==
   dependencies:
     "@babel/core" "^7.0.0"
     "@pmmmwh/react-refresh-webpack-plugin" "^0.4.0"
@@ -223,10 +223,10 @@
     babel-loader "^8.0.0"
     chalk "^4.0.0"
     cli-highlight "^2.0.0"
-    commander "^7.0.0"
+    commander "^8.0.0"
     copy-webpack-plugin "^9.0.0"
     css "^3.0.0"
-    css-loader "^5.0.0"
+    css-loader "^6.0.0"
     dotenv-webpack "^7.0.0"
     fork-ts-checker-webpack-plugin "^6.0.0"
     loader-utils "^2.0.0"
@@ -234,7 +234,7 @@
     micromatch "^4.0.0"
     postcss "^8.0.0"
     postcss-import "^14.0.0"
-    postcss-loader "^5.0.0"
+    postcss-loader "^6.0.0"
     raw-loader "^4.0.0"
     react-refresh "~0.8.3"
     sass "^1.0.0"
@@ -245,7 +245,7 @@
     ts-dedent "^2.0.0"
     ts-loader "^9.0.0"
     vue-loader "^15.0.0"
-    webpack "5.50.0"
+    webpack "^5.30.0 <= 5.50.0 || ^5.51.2"
     webpack-bundle-analyzer "^4.0.0"
     webpack-chain "^6.0.0"
     webpack-cli "^4.0.0"
@@ -834,12 +834,7 @@ commander@^2.20.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-commander@^6.0.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-6.2.0.tgz#b990bfb8ac030aedc6d11bc04d1488ffef56db75"
-  integrity sha512-zP4jEKbe8SHzKJYQmq8Y9gYjtO/POJLgIdKgV7B9qNmABVFVc+ctqSX6iXh4mCpJfRBOabiZ2YKPg8ciDw6C+Q==
-
-commander@^6.2.0:
+commander@^6.0.0, commander@^6.2.0:
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-6.2.1.tgz#0792eb682dfbc325999bb2b84fddddba110ac73c"
   integrity sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==
@@ -848,6 +843,11 @@ commander@^7.0.0:
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-7.2.0.tgz#a36cb57d0b501ce108e4d20559a150a391d97ab7"
   integrity sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==
+
+commander@^8.0.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-8.2.0.tgz#37fe2bde301d87d47a53adeff8b5915db1381ca8"
+  integrity sha512-LLKxDvHeL91/8MIyTAD5BFMNtoIwztGPMiM/7Bl8rIPmHCZXRxmSWr91h57dpOpnQ6jIUqEWdXE/uBYMfiVZDA==
 
 commondir@^1.0.1:
   version "1.0.1"
@@ -917,20 +917,18 @@ cross-spawn@^7.0.3:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
-css-loader@^5.0.0:
-  version "5.2.7"
-  resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-5.2.7.tgz#9b9f111edf6fb2be5dc62525644cbc9c232064ae"
-  integrity sha512-Q7mOvpBNBG7YrVGMxRxcBJZFL75o+cH2abNASdibkj/fffYD8qWbInZrD0S9ccI6vZclF3DsHE7njGlLtaHbhg==
+css-loader@^6.0.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-6.2.0.tgz#9663d9443841de957a3cb9bcea2eda65b3377071"
+  integrity sha512-/rvHfYRjIpymZblf49w8jYcRo2y9gj6rV8UroHGmBxKrIyGLokpycyKzp9OkitvqT29ZSpzJ0Ic7SpnJX3sC8g==
   dependencies:
     icss-utils "^5.1.0"
-    loader-utils "^2.0.0"
     postcss "^8.2.15"
     postcss-modules-extract-imports "^3.0.0"
     postcss-modules-local-by-default "^4.0.0"
     postcss-modules-scope "^3.0.0"
     postcss-modules-values "^4.0.0"
     postcss-value-parser "^4.1.0"
-    schema-utils "^3.0.0"
     semver "^7.3.5"
 
 css-unit-converter@^1.1.1:
@@ -1750,11 +1748,6 @@ mz@^2.4.0:
     object-assign "^4.0.1"
     thenify-all "^1.0.0"
 
-nanoid@^3.1.20:
-  version "3.1.20"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.20.tgz#badc263c6b1dcf14b71efaa85f6ab4c1d6cfc788"
-  integrity sha512-a1cQNyczgKbLX9jwbS/+d7W8fX/RfgYR7lVWwWOGIPNgK2m0MWvrGF6/m4kk6U3QcFMnZf3RIhL0v2Jgh/0Uxw==
-
 nanoid@^3.1.23:
   version "3.1.25"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.25.tgz#09ca32747c0e543f0e1814b7d3793477f9c8e152"
@@ -1958,14 +1951,14 @@ postcss-load-config@^3.1.0:
     lilconfig "^2.0.3"
     yaml "^1.10.2"
 
-postcss-loader@^5.0.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/postcss-loader/-/postcss-loader-5.3.0.tgz#1657f869e48d4fdb018a40771c235e499ee26244"
-  integrity sha512-/+Z1RAmssdiSLgIZwnJHwBMnlABPgF7giYzTN2NOfr9D21IJZ4mQC1R2miwp80zno9M4zMD/umGI8cR+2EL5zw==
+postcss-loader@^6.0.0:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/postcss-loader/-/postcss-loader-6.1.1.tgz#58dd0a3accd9bc87cc52eff75244db578d11301a"
+  integrity sha512-lBmJMvRh1D40dqpWKr9Rpygwxn8M74U9uaCSeYGNKLGInbk9mXBt1ultHf2dH9Ghk6Ue4UXlXWwGMH9QdUJ5ug==
   dependencies:
     cosmiconfig "^7.0.0"
     klona "^2.0.4"
-    semver "^7.3.4"
+    semver "^7.3.5"
 
 postcss-modules-extract-imports@^3.0.0:
   version "3.0.0"
@@ -2030,7 +2023,7 @@ postcss-value-parser@^4.0.0, postcss-value-parser@^4.1.0:
   resolved "https://registry.yarnpkg.com/postcss-value-parser/-/postcss-value-parser-4.1.0.tgz#443f6a20ced6481a2bda4fa8532a6e55d789a2cb"
   integrity sha512-97DXOFbQJhk71ne5/Mt6cOu6yxsSfM0QGQyl0L25Gca4yGWEGJaig7l7gbCX623VqTBNGLRLaVUCnNkcedlRSQ==
 
-postcss@8.3.6, postcss@^8.0.0, postcss@^8.2.15:
+postcss@8.3.6, postcss@^8.0.0, postcss@^8.1.6, postcss@^8.2.1, postcss@^8.2.15:
   version "8.3.6"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.3.6.tgz#2730dd76a97969f37f53b9a6096197be311cc4ea"
   integrity sha512-wG1cc/JhRgdqB6WHEuyLTedf3KIRuD0hG6ldkFEZNCjRxiC+3i6kkWUUbiJQayP28iwG35cEmAbe98585BYV0A==
@@ -2047,25 +2040,6 @@ postcss@^7.0.36:
     chalk "^2.4.2"
     source-map "^0.6.1"
     supports-color "^6.1.0"
-
-postcss@^8.1.6:
-  version "8.1.13"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.1.13.tgz#5d2aa2f96b3eaab5edc2ef488b4bd636c680f712"
-  integrity sha512-D++wck3XhQkICYfysZRx90JCDgaTTdq8YxLswB9cjBzfxwcVcQjn3LsjXon0PQ6TIOof2IGWLRHhSgXZuJct4w==
-  dependencies:
-    colorette "^1.2.1"
-    nanoid "^3.1.20"
-    source-map "^0.6.1"
-    vfile-location "^3.2.0"
-
-postcss@^8.2.1:
-  version "8.2.6"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.2.6.tgz#5d69a974543b45f87e464bc4c3e392a97d6be9fe"
-  integrity sha512-xpB8qYxgPuly166AGlpRjUdEYtmOWx2iCwGmrv4vqZL9YPVviDVPZPRXxnXr6xPZOdxQ9lp3ZBFCRgWJ7LE3Sg==
-  dependencies:
-    colorette "^1.2.1"
-    nanoid "^3.1.20"
-    source-map "^0.6.1"
 
 prettier@^1.18.2:
   version "1.19.1"
@@ -2569,11 +2543,6 @@ v8-compile-cache@^2.2.0:
   resolved "https://registry.yarnpkg.com/v8-compile-cache/-/v8-compile-cache-2.3.0.tgz#2de19618c66dc247dcfb6f99338035d8245a2cee"
   integrity sha512-l8lCEmLcLYZh4nbunNZvQCJc5pv7+RCwa8q/LdUx8u7lsWvPDKmpodJAJNwkAhJC//dFY48KuIEmjtd4RViDrA==
 
-vfile-location@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/vfile-location/-/vfile-location-3.2.0.tgz#d8e41fbcbd406063669ebf6c33d56ae8721d0f3c"
-  integrity sha512-aLEIZKv/oxuCDZ8lkJGhuhztf/BW4M+iHdCwglA/eWc+vtuRFJj8EtgceYFX4LRjOhCAAiNHsKGssC6onJ+jbA==
-
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
@@ -2671,10 +2640,10 @@ webpack-virtual-modules@^0.4.0:
   resolved "https://registry.yarnpkg.com/webpack-virtual-modules/-/webpack-virtual-modules-0.4.3.tgz#cd597c6d51d5a5ecb473eea1983a58fa8a17ded9"
   integrity sha512-5NUqC2JquIL2pBAAo/VfBP6KuGkHIZQXW/lNKupLPfhViwh8wNsu0BObtl09yuKZszeEUfbXz8xhrHvSG16Nqw==
 
-webpack@5.50.0:
-  version "5.50.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.50.0.tgz#5562d75902a749eb4d75131f5627eac3a3192527"
-  integrity sha512-hqxI7t/KVygs0WRv/kTgUW8Kl3YC81uyWQSo/7WUs5LsuRw0htH/fCwbVBGCuiX/t4s7qzjXFcf41O8Reiypag==
+"webpack@^5.30.0 <= 5.50.0 || ^5.51.2":
+  version "5.52.1"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.52.1.tgz#2dc1d9029ecb7acfb80da7bf67baab67baa517a7"
+  integrity sha512-wkGb0hLfrS7ML3n2xIKfUIwHbjB6gxwQHyLmVHoAqEQBw+nWo+G6LoHL098FEXqahqximsntjBLuewStrnJk0g==
   dependencies:
     "@types/eslint-scope" "^3.7.0"
     "@types/estree" "^0.0.50"
