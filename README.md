@@ -44,8 +44,7 @@ Example config with `jit` enabled:
 // tailwind.config.js
 
 module.exports = {
-  mode: 'jit',
-  purge: [
+  content: [
     './app/**/*.{css,xml,html,vue,svelte,ts,tsx}'
   ],
   darkMode: false, // or 'media' or 'class'
