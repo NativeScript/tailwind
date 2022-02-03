@@ -1,15 +1,15 @@
 # @nativescript/tailwind
 
-Makes using [Tailwind](https://tailwindcss.com/) in NativeScript a whole lot easier!
+Makes using [Tailwind CSS](https://tailwindcss.com/) in NativeScript a whole lot easier!
 
 ```html
 <label
-  text="TailwindCSS is awesome!"
+  text="Tailwind CSS is awesome!"
   class="px-2 py-1 text-center text-blue-600 bg-blue-200 rounded-full"
 />
 ```
 
-![TailwindCss is awesome!](https://user-images.githubusercontent.com/879060/81098285-73e3ad80-8f09-11ea-8cfa-7e2ec2eebcde.png)
+![Tailwind CSS is awesome!](https://user-images.githubusercontent.com/879060/81098285-73e3ad80-8f09-11ea-8cfa-7e2ec2eebcde.png)
 
 # Usage (with @nativescript/webpack version 5.x)
 
@@ -28,7 +28,7 @@ Change your `app.css` or `app.scss` to include the tailwind utilities
 
 Start using tailwind.
 
-# Using TailwindCSS JIT (just in time)
+# Using Tailwind CSS JIT (just in time)
 
 Tailwind's new jit mode is supported, it just has to be enabled in the config. See https://tailwindcss.com/docs/just-in-time-mode#enabling-jit-mode for details.
 
