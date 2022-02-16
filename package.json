@@ -1,22 +1,13 @@
 {
   "name": "@nativescript/tailwind",
-  "version": "1.0.0-rc.1",
+  "version": "2.0.0-rc.0",
   "description": "TailwindCSS for NativeScript",
   "main": "src/index.js",
-  "bin": {
-    "nativescript-tailwind": "build.js"
-  },
-  "scripts": {
-    "build": "node build.js",
-    "prepare": "npm run build"
-  },
   "files": [
-    "dist",
     "src",
-    "tailwind.config.js",
     "nativescript.webpack.js"
   ],
-  "repository": "https://github.com/rigor789/nativescript-tailwind",
+  "repository": "https://github.com/NativeScript/tailwind",
   "keywords": [
     "nativescript",
     "nativescript-vue",
@@ -42,8 +33,8 @@
   "license": "MIT",
   "devDependencies": {
     "@nativescript/webpack": "^5.0.4",
-    "postcss": "8.4.5",
-    "tailwindcss": "^3.0.15"
+    "postcss": "8.4.6",
+    "tailwindcss": "^3.0.23"
   },
   "dependencies": {
     "@hookun/parse-animation-shorthand": "^0.1.2"

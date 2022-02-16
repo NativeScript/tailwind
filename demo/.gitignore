@@ -3,6 +3,10 @@ hooks/
 node_modules/
 platforms/
 
+# lockfiles
+yarn.lock
+package-lock.json
+
 # Logs
 logs
 *.log

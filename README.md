@@ -1,5 +1,7 @@
 # @nativescript/tailwind
 
+:alert: This `rc` version requires `@nativescript/core@8.2.0-alpha.*` to work properly.
+
 Makes using [Tailwind CSS](https://tailwindcss.com/) in NativeScript a whole lot easier!
 
 ```html
@@ -11,34 +13,23 @@ Makes using [Tailwind CSS](https://tailwindcss.com/) in NativeScript a whole lot
 
 ![Tailwind CSS is awesome!](https://user-images.githubusercontent.com/879060/81098285-73e3ad80-8f09-11ea-8cfa-7e2ec2eebcde.png)
 
-# Usage (with @nativescript/webpack version 5.x)
+# Usage
+
+> **Note:** This guide assumes you are using `@nativescript/webpack@5.x` as some configuration is done automatically. If you have not upgraded yet, please read the docs below for usage with older `@nativescript/webpack` versions.
 
 Install `@nativescript/tailwind` and `tailwindcss`
 
-```bash
+```cli
 npm install --save @nativescript/tailwind tailwindcss
 ```
 
-Change your `app.css` or `app.scss` to include the tailwind utilities
+Generate a `tailwind.config.js` with
 
-```css
-@tailwind components;
-@tailwind utilities;
-```
-
-Start using tailwind.
-
-# Using Tailwind CSS JIT (just in time)
-
-Tailwind's new jit mode is supported, it just has to be enabled in the config. See https://tailwindcss.com/docs/just-in-time-mode#enabling-jit-mode for details.
-
-To generate a blank config, you can run
-
-```bash
+```cli
 npx tailwindcss init
 ```
 
-Example config with `jit` enabled:
+Adjust `content`, `darkMode`, `corePlugins` plus any other settings you need, here are the values we recommend: 
 
 ```js
 // tailwind.config.js
@@ -47,18 +38,29 @@ module.exports = {
   content: [
     './app/**/*.{css,xml,html,vue,svelte,ts,tsx}'
   ],
-  darkMode: false, // or 'media' or 'class'
+  // use .dark to toggle dark mode - since 'media' (default) does not work in NativeScript
+  darkMode: 'class',
   theme: {
     extend: {},
   },
-  variants: {
-    extend: {},
-  },
   plugins: [],
+  corePlugins: {
+    preflight: false // disables browser-specific resets
+  }
 }
 ```
 
-# Using a PostCSS config
+Change your `app.css` or `app.scss` to include the tailwind utilities
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+Start using tailwind in your app.
+
+# Using a custom PostCSS config
 
 In case you need to customize the postcss configuration, you can create a `postcss.config.js` (other formats are supported, see https://github.com/webpack-contrib/postcss-loader#config-files) file and add any customizations, for example:
 
@@ -75,13 +77,12 @@ module.exports = {
 
 > **Note:** if you want to apply customizations to `tailwindcss` or `@nativescript/tailwind`, you will need to disable autoloading:
 > 
-> ```bash
+> ```cli
 > ns config set tailwind.autoload false
 > ```
 > This is required only if you make changes to either of the 2 plugins - because by default `postcss-loader` processes the config file first, and then the `postcssOptions` passed to it. With autoloading enabled, any customizations will be overwritten due to the loading order. Setting `tailwind.autoload` to `false` just disables the internal loading of these plugins, and requires you to manually add them to your postcss config in the above order.
 
-
-## Usage (with @nativescript/webpack version <5.x)
+## Usage with older @nativescript/webpack versions
 
 This usage is considered legacy and will not be supported - however we are documenting it here in case your project is still using older `@nativescript/webpack`.
 
@@ -89,80 +90,78 @@ This usage is considered legacy and will not be supported - however we are docum
 
   <summary>See instructions</summary>
 
-```bash
-npm install --save-dev @nativescript/tailwind tailwindcss postcss postcss-loader
-```
-
-Create `postcss.config.js` with the following:
-
-```js
-module.exports = {
-   plugins: [
-       require('tailwindcss'),
-       require('nativescript-tailwind')
-   ]
-}
-```
-
-Change your `app.css` or `app.scss` to include the tailwind utilities
-
-```css
-@tailwind components;
-@tailwind utilities;
-```
-
-Update `webpack.config.js` to use PostCSS
- 
-Find the section of the config that defines the rules/loaders for different file types.
-To quickly find this block - search for `rules: [`.
-
-For every css/scss block, append the `postcss-loader` to the list of loaders, for example:
-```diff
-{
-  test: /[\/|\\]app\.css$/,
-  use: [
-    'nativescript-dev-webpack/style-hot-loader',
-    {
-      loader: "nativescript-dev-webpack/css2json-loader",
-      options: { useForImports: true }
-    },
-+   'postcss-loader',
-  ],
-}
-```
- **Make sure you append `postcss-loader` to all css/scss rules in the config.**
-
- </details>
-
-## Usage with the pre-built css
-
-`@nativescript/tailwind` ships with a pre-built `dist/tailwind.css` file that's built using the default tailwind config.
-
-Using the pre-built css is not recommended, since you lose the ability to configure tailwind, jit, purging etc.
-
-<details>
-  
-  <summary>See instructions</summary>
-
-  Import the pre-built css file in your `app.css` (or `scss`):
-  
-  ```css
-  @import "@nativescript/tailwind/dist/tailwind.css"
+  ```cli
+  npm install --save-dev @nativescript/tailwind tailwindcss postcss postcss-loader
   ```
 
-  Alternatively, import it in your `main.js` (or `main.ts`, `app.js`, `app.ts` etc.)
+  Create `postcss.config.js` with the following:
 
   ```js
-  import '@nativescript/tailwind/dist/tailwind.css'
+  module.exports = {
+    plugins: [
+        require('tailwindcss'),
+        require('nativescript-tailwind')
+    ]
+  }
   ```
 
-  In `.vue` files you can also do
 
-  ```html
-  <style src="@nativescript/tailwind/dist/tailwind.css" />
+  Generate a `tailwind.config.js` with
+
+  ```cli
+  npx tailwindcss init
+  ```
+
+  Adjust `content`, `darkMode`, `corePlugins` plus any other settings you need, here are the values we recommend: 
+  
+  ```js
+  // tailwind.config.js
+
+  module.exports = {
+    content: [
+      './app/**/*.{css,xml,html,vue,svelte,ts,tsx}'
+    ],
+    // use .dark to toggle dark mode - since 'media' (default) does not work in NativeScript
+    darkMode: 'class',
+    theme: {
+      extend: {},
+    },
+    plugins: [],
+    corePlugins: {
+      preflight: false // disables browser-specific resets
+    }
+  }
+  ```
+
+  Change your `app.css` or `app.scss` to include the tailwind utilities
+
+  ```css
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+  ```
+
+  Update `webpack.config.js` to use PostCSS
+  
+  Find the section of the config that defines the rules/loaders for different file types.
+  To quickly find this block - search for `rules: [`.
+
+  For every css/scss block, append the `postcss-loader` to the list of loaders, for example:
+
+  ```diff
+  {
+    test: /[\/|\\]app\.css$/,
+    use: [
+      'nativescript-dev-webpack/style-hot-loader',
+      {
+        loader: "nativescript-dev-webpack/css2json-loader",
+        options: { useForImports: true }
+      },
+  +   'postcss-loader',
+    ],
+  }
   ```
   
-  > **Note:** make sure you only include this once (for example in `App.vue`) - otherwise your bundle will contain the whole tailwind.css file multiple times.
-
+  **Make sure you append `postcss-loader` to all css/scss rules in the config.**
 
 </details>
