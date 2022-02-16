@@ -1,6 +1,6 @@
 # @nativescript/tailwind
 
-:alert: This `rc` version requires `@nativescript/core@8.2.0-alpha.*` to work properly.
+> **Warning**: :warning: This `rc` version requires `@nativescript/core@8.2.0-alpha.*` to work properly.
 
 Makes using [Tailwind CSS](https://tailwindcss.com/) in NativeScript a whole lot easier!
 
@@ -13,7 +13,7 @@ Makes using [Tailwind CSS](https://tailwindcss.com/) in NativeScript a whole lot
 
 ![Tailwind CSS is awesome!](https://user-images.githubusercontent.com/879060/81098285-73e3ad80-8f09-11ea-8cfa-7e2ec2eebcde.png)
 
-# Usage
+## Usage
 
 > **Note:** This guide assumes you are using `@nativescript/webpack@5.x` as some configuration is done automatically. If you have not upgraded yet, please read the docs below for usage with older `@nativescript/webpack` versions.
 
@@ -60,7 +60,7 @@ Change your `app.css` or `app.scss` to include the tailwind utilities
 
 Start using tailwind in your app.
 
-# Using a custom PostCSS config
+### Using a custom PostCSS config
 
 In case you need to customize the postcss configuration, you can create a `postcss.config.js` (other formats are supported, see https://github.com/webpack-contrib/postcss-loader#config-files) file and add any customizations, for example:
 
