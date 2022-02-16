@@ -4,14 +4,14 @@
   "version": "1.0.0",
   "private": "true",
   "dependencies": {
-    "@nativescript/core": "~8.0.0",
+    "@nativescript/core": "~8.2.0-alpha.5",
     "@nativescript/tailwind": "../"
   },
   "devDependencies": {
-    "@nativescript/android": "8.0.0",
-    "@nativescript/types": "~8.0.0",
-    "@nativescript/webpack": "rc",
-    "tailwindcss": "^2.2.7",
-    "typescript": "~4.0.0"
+    "@nativescript/android": "8.2.0-alpha.9",
+    "@nativescript/types": "~8.1.1",
+    "@nativescript/webpack": "^5.0.4",
+    "tailwindcss": "^3.0.14",
+    "typescript": "~4.5.4"
   }
 }

@@ -29,7 +29,5 @@ fs.readFile(inputFile, (err, css) => {
       }
       return result
     })
-    .then(result => {
-      console.log('Built.')
-    })
+    .then(() => console.log('Built.'))
 })

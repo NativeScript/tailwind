@@ -3,11 +3,11 @@
  */
 module.exports = (webpack) => {
   const shouldAutoload = webpack.Utils.config.getValue('tailwind.autoload', true);
-  
+
   if(!shouldAutoload) {
     return;
   }
-  
+
   const addPostCSSPlugins = (options = {}) => {
     const { merge } = require("webpack-merge");
 
