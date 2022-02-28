@@ -33,7 +33,7 @@
   "license": "MIT",
   "devDependencies": {
     "@nativescript/webpack": "^5.0.4",
-    "postcss": "8.4.6",
+    "postcss": "8.4.7",
     "tailwindcss": "^3.0.23"
   },
   "dependencies": {
