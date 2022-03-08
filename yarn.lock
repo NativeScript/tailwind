@@ -211,10 +211,10 @@
   resolved "https://registry.npmjs.org/@hookun/parse-animation-shorthand/-/parse-animation-shorthand-0.1.2.tgz"
   integrity sha512-zLk0nzsF6WDjTRpEq7491pFxSPTOTzcGkCqcnHaSiYqZCJ6Nlq05srV331iyP5rqXaRl+QF7vzRhxLTyq+J+Mg==
 
-"@nativescript/webpack@^5.0.4":
-  version "5.0.4"
-  resolved "https://registry.npmjs.org/@nativescript/webpack/-/webpack-5.0.4.tgz"
-  integrity sha512-onPGU4pehbEUd+tS/crplwK2JBdKXMnk0wG5UuDhv6JsGnrXxrv/3LiqxRwLSLR7ajWb+DrdvHDlwjupPj+9jA==
+"@nativescript/webpack@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@nativescript/webpack/-/webpack-5.0.5.tgz#1d2a5442869ff45d2322d29f142c5b7fa7710e7c"
+  integrity sha512-dnTQro4LWCSLQ6vzGkN+YIhtLNhVqsd3AQZ8T22p2k05T7Ugl/AavwiQk8B5JG+ManVMFCXJ9g/p0Iisgj4dKg==
   dependencies:
     "@babel/core" "^7.0.0"
     "@pmmmwh/react-refresh-webpack-plugin" "^0.5.2"
@@ -1725,6 +1725,11 @@ nanoid@^3.2.0:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.0.tgz#5906f776fd886c66c24f3653e0c46fcb1d4ad6b0"
   integrity sha512-JzxqqT5u/x+/KOFSd7JP15DOo9nOoHpx6DYatqIHUW2+flybkm+mdcraotSQR5WcnZr+qhGVh8Ted0KdfSMxlg==
 
+nanoid@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.1.tgz#6347a18cac88af88f58af0b3594b723d5e99bb35"
+  integrity sha512-n6Vs/3KGyxPQd6uO0eH4Bv0ojGSUvuLlIHtC3Y0kEO23YRge8H9x1GCzLn28YX0H66pMkxuaeESFq4tKISKwdw==
+
 neo-async@^2.6.2:
   version "2.6.2"
   resolved "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz"
@@ -1980,12 +1985,12 @@ postcss-value-parser@^4.0.0, postcss-value-parser@^4.1.0, postcss-value-parser@^
   resolved "https://registry.npmjs.org/postcss-value-parser/-/postcss-value-parser-4.2.0.tgz"
   integrity sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==
 
-postcss@8.4.6, postcss@^8.4.6:
-  version "8.4.6"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.6.tgz#c5ff3c3c457a23864f32cb45ac9b741498a09ae1"
-  integrity sha512-OovjwIzs9Te46vlEx7+uXB0PLijpwjXGKXjVGGPIGubGpq7uh5Xgf6D6FiJ/SzJMBosHDp6a2hiXOS97iBXcaA==
+postcss@8.4.8:
+  version "8.4.8"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.8.tgz#dad963a76e82c081a0657d3a2f3602ce10c2e032"
+  integrity sha512-2tXEqGxrjvAO6U+CJzDL2Fk2kPHTv1jQsYkSoMeOis2SsYaXRO2COxTdQp99cYvif9JTXaAk9lYGc3VhJt7JPQ==
   dependencies:
-    nanoid "^3.2.0"
+    nanoid "^3.3.1"
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
@@ -2006,6 +2011,15 @@ postcss@^8.0.0, postcss@^8.2.15:
     nanoid "^3.1.30"
     picocolors "^1.0.0"
     source-map-js "^1.0.1"
+
+postcss@^8.4.6:
+  version "8.4.6"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.6.tgz#c5ff3c3c457a23864f32cb45ac9b741498a09ae1"
+  integrity sha512-OovjwIzs9Te46vlEx7+uXB0PLijpwjXGKXjVGGPIGubGpq7uh5Xgf6D6FiJ/SzJMBosHDp6a2hiXOS97iBXcaA==
+  dependencies:
+    nanoid "^3.2.0"
+    picocolors "^1.0.0"
+    source-map-js "^1.0.2"
 
 prettier@^1.18.2:
   version "1.19.1"

@@ -1,6 +1,6 @@
 {
   "name": "@nativescript/tailwind",
-  "version": "2.0.0-rc.1",
+  "version": "2.0.0",
   "description": "TailwindCSS for NativeScript",
   "main": "src/index.js",
   "files": [
@@ -11,6 +11,8 @@
   "keywords": [
     "nativescript",
     "nativescript-vue",
+    "nativescript-theme",
+    "theme",
     "tailwind",
     "tailwindcss",
     "styling",
@@ -32,8 +34,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@nativescript/webpack": "^5.0.4",
-    "postcss": "8.4.6",
+    "@nativescript/webpack": "^5.0.5",
+    "postcss": "8.4.8",
     "tailwindcss": "^3.0.23"
   },
   "dependencies": {
