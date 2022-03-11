@@ -102,7 +102,6 @@ module.exports = (options = {debug: false}) => {
       // declarations that define unsupported variables/rules
       if ([
         'tw-ring',
-        'tw-shadow',
         'tw-ordinal',
         'tw-slashed-zero',
         'tw-numeric'
