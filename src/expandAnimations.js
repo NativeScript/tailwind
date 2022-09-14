@@ -11,6 +11,9 @@ module.exports = (options = { debug: false }) => {
       // replace animation: *
       // with    animation-*:
       if (decl.prop === "animation") {
+		if(decl.value.startsWith("-")){
+			decl.value = decl.value.slice(1);
+        }
         const styles = parseSingle(decl.value);
         if (styles.duration && Number.isInteger(styles.duration)) {
           styles.duration = `${styles.duration / 1000}s`;
