@@ -34,12 +34,12 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@nativescript/webpack": "^5.0.5",
-    "postcss": "8.4.8",
-    "tailwindcss": "^3.0.23"
+    "@nativescript/webpack": "^5.0.8",
+    "postcss": "8.4.16",
+    "tailwindcss": "^3.1.8"
   },
   "dependencies": {
-    "@hookun/parse-animation-shorthand": "^0.1.2"
+    "@hookun/parse-animation-shorthand": "^0.1.4"
   },
   "peerDependencies": {
     "postcss": "^8.0.0"
