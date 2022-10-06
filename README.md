@@ -34,12 +34,13 @@ Adjust `content`, `darkMode`, `corePlugins` plus any other settings you need, he
 ```js
 // tailwind.config.js
 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     './app/**/*.{css,xml,html,vue,svelte,ts,tsx}'
   ],
-  // use .dark to toggle dark mode - since 'media' (default) does not work in NativeScript
-  darkMode: 'class',
+  // use the .ns-dark class to control dark mode (applied by NativeScript) - since 'media' (default) is not supported.
+  darkMode: ['class', '.ns-dark'],
   theme: {
     extend: {},
   },
