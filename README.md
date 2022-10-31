@@ -46,9 +46,17 @@ module.exports = {
     extend: {},
   },
   plugins: [
+    /**
+     * A simple inline plugin that adds the ios: and android: variants
+     * 
+     * Example usage: 
+     *
+     *   <Label class="android:text-red-500 ios:text-blue-500" />
+     *
+     */
     plugin(function ({ addVariant }) {
-      addVariant('ios', '.ns-ios &');
       addVariant('android', '.ns-android &');
+      addVariant('ios', '.ns-ios &');
     }),
   ],
   corePlugins: {
