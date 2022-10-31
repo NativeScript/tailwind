@@ -33,6 +33,7 @@ Adjust `content`, `darkMode`, `corePlugins` plus any other settings you need, he
 
 ```js
 // tailwind.config.js
+const plugin = require('tailwindcss/plugin');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -44,7 +45,12 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addVariant }) {
+      addVariant('ios', '.ns-ios &');
+      addVariant('android', '.ns-android &');
+    }),
+  ],
   corePlugins: {
     preflight: false // disables browser-specific resets
   }
