@@ -13,7 +13,7 @@ module.exports = (webpack) => {
 
     return merge(options, {
       postcssOptions: {
-        plugins: ["tailwindcss", "@nativescript/tailwind"],
+        plugins: ["tailwindcss", "@nativescript/tailwind", "@csstools/postcss-is-pseudo-class"],
       },
     });
   };
