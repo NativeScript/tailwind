@@ -1,6 +1,6 @@
 {
   "name": "@nativescript/tailwind",
-  "version": "2.1.0-rc.2",
+  "version": "2.1.0",
   "description": "TailwindCSS for NativeScript",
   "main": "src/index.js",
   "files": [
