@@ -11,7 +11,7 @@ module.exports = (webpack) => {
   const addPostCSSPlugins = (options = {}) => {
     return webpack.merge(options, {
       postcssOptions: {
-        plugins: ["tailwindcss", "@nativescript/tailwind", "@csstools/postcss-is-pseudo-class"],
+        plugins: ["postcss-preset-env", "@tailwindcss/postcss", "@nativescript/tailwind", "@csstools/postcss-is-pseudo-class"],
       },
     });
   };
