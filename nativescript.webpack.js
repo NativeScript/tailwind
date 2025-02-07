@@ -9,11 +9,9 @@ module.exports = (webpack) => {
   }
 
   const addPostCSSPlugins = (options = {}) => {
-    const { merge } = require("webpack-merge");
-
-    return merge(options, {
+    return webpack.merge(options, {
       postcssOptions: {
-        plugins: ["tailwindcss", "@nativescript/tailwind"],
+        plugins: ["tailwindcss", "@nativescript/tailwind", "@csstools/postcss-is-pseudo-class"],
       },
     });
   };

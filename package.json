@@ -1,6 +1,6 @@
 {
   "name": "@nativescript/tailwind",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "TailwindCSS for NativeScript",
   "main": "src/index.js",
   "files": [
@@ -36,10 +36,11 @@
   "devDependencies": {
     "@nativescript/webpack": "^5.0.8",
     "postcss": "8.4.16",
-    "tailwindcss": "^3.1.8"
+    "tailwindcss": "^3.4.0"
   },
   "dependencies": {
-    "@hookun/parse-animation-shorthand": "^0.1.4"
+    "@hookun/parse-animation-shorthand": "^0.1.4",
+    "@csstools/postcss-is-pseudo-class": "4.0.4"
   },
   "peerDependencies": {
     "postcss": "^8.0.0"

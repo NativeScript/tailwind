@@ -29,7 +29,7 @@ Generate a `tailwind.config.js` with
 npx tailwindcss init
 ```
 
-Adjust `content`, `darkMode`, `corePlugins` plus any other settings you need, here are the values we recommend: 
+When the [NativeScript CLI](https://github.com/NativeScript/nativescript-cli) creates a new project, it may put code into a `src` folder instead of the  `app` referenced below. Adjust `content`, `darkMode`, `corePlugins` plus any other settings you need. Here are the values we recommend. If you're struggling to get Tailwind working for the first time, check the `content` setting.
 
 ```js
 // tailwind.config.js
@@ -37,6 +37,7 @@ const plugin = require('tailwindcss/plugin');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  // check this setting first for initial setup issues
   content: [
     './app/**/*.{css,xml,html,vue,svelte,ts,tsx}'
   ],
@@ -86,6 +87,7 @@ module.exports = {
   plugins: [
     ["tailwindcss", { config: "./tailwind.config.custom.js" }],
     "@nativescript/tailwind",
+    "@csstools/postcss-is-pseudo-class"
   ],
 };
 ```
