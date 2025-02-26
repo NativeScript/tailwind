@@ -50,6 +50,13 @@ module.exports = (options = { debug: false }) => {
         return rule.remove();
       }
 
+      // replace :root and :host pseudo selector, introduced in Tailwind 4+ with .ns-root for var handling.
+      if (rule.selector.includes(":root") || rule.selector.includes(":host")) {
+        rule.selectors = rule.selectors.map((selector) =>
+          selector.replace(/:root/, ".ns-root").replace(/:host/, ".ns-root")
+        );
+      }
+      
       // remove rules with unsupported selectors
       if (!isSupportedSelector(rule.selector)) {
         return rule.remove();
@@ -97,6 +104,18 @@ module.exports = (options = { debug: false }) => {
           case "hidden":
             return decl.replaceWith(decl.clone({ value: "collapse" }));
         }
+      }
+
+      // invalid with core 8.8+ at moment
+      // Note: could be supported at somepoint
+      if (decl.prop === "placeholder-color" && decl.value?.includes("color-mix")) {
+        return decl.remove();
+      }
+
+      // invalid with core 8.8+ at moment
+      // Note: could be supported at somepoint
+      if (decl.value?.includes("currentColor")) {
+        return decl.remove();
       }
 
       // replace vertical-align: middle
@@ -219,6 +238,12 @@ const supportedProperties = {
   "margin-left": true,
   "margin-right": true,
   "margin-top": true,
+  "margin-block": true,
+  "margin-block-start": true,
+  "margin-block-end": true,
+  "margin-inline": true,
+  "margin-inline-start": true,
+  "margin-inline-end": true,
   "min-height": true,
   "min-width": true,
   "off-background-color": true,
