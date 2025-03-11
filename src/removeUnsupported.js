@@ -250,6 +250,7 @@ const supportedProperties = {
   opacity: true,
   order: true,
   padding: true,
+  "padding-block": true,
   "padding-bottom": true,
   "padding-left": true,
   "padding-right": true,
