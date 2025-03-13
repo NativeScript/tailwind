@@ -252,6 +252,7 @@ const supportedProperties = {
   padding: true,
   "padding-block": true,
   "padding-bottom": true,
+  "padding-inline": true,
   "padding-left": true,
   "padding-right": true,
   "padding-top": true,
