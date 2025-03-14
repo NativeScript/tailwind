@@ -108,7 +108,7 @@ module.exports = (options = { debug: false }) => {
 
       // invalid with core 8.8+ at moment
       // Note: could be supported at somepoint
-      if (decl.prop === "placeholder-color" && decl.value?.includes("color-mix")) {
+      if (decl.prop === "placeholder-color") {
         return decl.remove();
       }
 
@@ -215,6 +215,7 @@ const supportedProperties = {
   "box-shadow": true,
   "clip-path": true,
   color: true,
+  "color-mix": true,
   flex: true,
   "flex-grow": true,
   "flex-direction": true,
