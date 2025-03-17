@@ -52,8 +52,9 @@ module.exports = (options = { debug: false }) => {
 
       // replace :root and :host pseudo selector, introduced in Tailwind 4+ with .ns-root for var handling.
       if (rule.selector.includes(":root") || rule.selector.includes(":host")) {
+        const rootClasses = '.ns-root, .ns-modal';
         rule.selectors = rule.selectors.map((selector) =>
-          selector.replace(/:root/, ".ns-root").replace(/:host/, ".ns-root")
+          selector.replace(/:root/, rootClasses).replace(/:host/, rootClasses)
         );
       }
       
