@@ -19,7 +19,7 @@ Makes using [Tailwind CSS](https://tailwindcss.com/) in NativeScript a whole lot
 
 ### Tailwind CSS v4
 
-Tailwind CSS v4 [support](https://github.com/NativeScript/tailwind/pull/194) simplifies the setup significantly over v3. 
+If you need to use Tailwind CSS v4, follow these steps. Tailwind CSS v4 [support](https://github.com/NativeScript/tailwind/pull/194) simplifies the setup significantly over v3.
 
 **Install dependencies:**
 
