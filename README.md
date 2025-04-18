@@ -1,6 +1,6 @@
 # @nativescript/tailwind
 
-> **Warning**: :warning: `@nativescript/core@8.2.0` is required for colors to work properly You may see wrong colors on older core versions, because Tailwind CSS v3 uses the RGB/A color notation, which has been implemented for 8.2.0 and prior versions don't support it.
+> **Warning**: :warning: For **Tailwind CSS v3**, `@nativescript/core@8.2.0` is required for colors to work properly. You may see wrong colors on older core versions, because Tailwind CSS v3 uses the RGB/A color notation, which has been implemented for 8.2.0. **Tailwind CSS v4** uses Lightning CSS which handles this automatically.
 
 Makes using [Tailwind CSS](https://tailwindcss.com/) in NativeScript a whole lot easier!
 
@@ -15,21 +15,55 @@ Makes using [Tailwind CSS](https://tailwindcss.com/) in NativeScript a whole lot
 
 ## Usage
 
-> **Note:** This guide assumes you are using `@nativescript/webpack@5.x` as some configuration is done automatically. If you have not upgraded yet, please read the docs below for usage with older `@nativescript/webpack` versions.
+> **Note:** This guide assumes you are using `@nativescript/webpack@5.x` or higher. If you have not upgraded yet, please read the docs below for usage with older `@nativescript/webpack` versions (applicable to Tailwind CSS v3).
 
-Install `@nativescript/tailwind` and `tailwindcss`
+### Tailwind CSS v4
+
+If you need to use Tailwind CSS v4, follow these steps. Tailwind CSS v4 [support](https://github.com/NativeScript/tailwind/pull/194) simplifies the setup significantly over v3.
+
+**Install dependencies:**
 
 ```cli
 npm install --save @nativescript/tailwind tailwindcss
 ```
 
-Generate a `tailwind.config.js` with
+**Import Tailwind:** Add the following to your `app.css` or `app.scss`:
+
+```css
+@import 'tailwindcss';
+```
+
+#### Upgrading from Tailwind CSS 3
+
+**Update dependencies:**
+
+```cli
+npm install --save tailwindcss@latest
+```
+
+Open your `app.css` or `app.scss` and replace any existing Tailwind imports with:
+
+```css
+@import 'tailwindcss';
+```
+
+### Tailwind CSS v3 
+
+If you need to use Tailwind CSS v3, follow these steps:
+
+**Install dependencies:**
+
+```cli
+npm install --save @nativescript/tailwind tailwindcss
+```
+
+**Generate `tailwind.config.js`:**
 
 ```cli
 npx tailwindcss init
 ```
 
-When the [NativeScript CLI](https://github.com/NativeScript/nativescript-cli) creates a new project, it may put code into a `src` folder instead of the  `app` referenced below. Adjust `content`, `darkMode`, `corePlugins` plus any other settings you need. Here are the values we recommend. If you're struggling to get Tailwind working for the first time, check the `content` setting.
+**Configure `tailwind.config.js`:** When the [NativeScript CLI](https://github.com/NativeScript/nativescript-cli) creates a new project, it may put code into a `src` folder instead of the `app` referenced below. Adjust `content`, `darkMode`, `corePlugins` plus any other settings you need. Here are the values we recommend. **If you're struggling to get Tailwind working for the first time, check the `content` setting.**
 
 ```js
 // tailwind.config.js
@@ -66,7 +100,7 @@ module.exports = {
 }
 ```
 
-Change your `app.css` or `app.scss` to include the tailwind utilities
+**Include Tailwind directives:** Change your `app.css` or `app.scss` to include the tailwind directives:
 
 ```css
 @tailwind base;
@@ -78,30 +112,46 @@ Start using tailwind in your app.
 
 ### Using a custom PostCSS config
 
-In case you need to customize the postcss configuration, you can create a `postcss.config.js` (other formats are supported, see https://github.com/webpack-contrib/postcss-loader#config-files) file and add any customizations, for example:
+Manual PostCSS configuration is typically **not required** for **Tailwind CSS v4**. `@nativescript/tailwind` handles the necessary setup automatically.
+
+However, if you need to add *other* PostCSS plugins alongside Tailwind v4, create a `postcss.config.js` (or other supported formats, see https://github.com/webpack-contrib/postcss-loader#config-files) and include `@nativescript/tailwind`:
 
 ```js
-// postcss.config.js
+// postcss.config.js (Example for v4 with other plugins)
+
+module.exports = {
+  plugins: [
+    "@nativescript/tailwind", // Handles Tailwind v4 setup
+    // Add other PostCSS plugins here
+    "@csstools/postcss-is-pseudo-class" 
+  ],
+};
+```
+
+For **Tailwind CSS v3**, if you need to customize the postcss configuration (e.g., use a custom `tailwind.config.custom.js`), you can create a `postcss.config.js` file.
+
+```js
+// postcss.config.js (Example for v3 customization)
 
 module.exports = {
   plugins: [
     ["tailwindcss", { config: "./tailwind.config.custom.js" }],
     "@nativescript/tailwind",
-    "@csstools/postcss-is-pseudo-class"
+    // Add other PostCSS plugins here
+    "@csstools/postcss-is-pseudo-class" 
   ],
 };
 ```
 
-> **Note:** if you want to apply customizations to `tailwindcss` or `@nativescript/tailwind`, you will need to disable autoloading:
+> **Note (Tailwind CSS v3):** If you want to apply customizations to `tailwindcss` or `@nativescript/tailwind` in v3 using a custom PostCSS config, you will need to disable autoloading:
 > 
 > ```cli
 > ns config set tailwind.autoload false
 > ```
-> This is required only if you make changes to either of the 2 plugins - because by default `postcss-loader` processes the config file first, and then the `postcssOptions` passed to it. With autoloading enabled, any customizations will be overwritten due to the loading order. Setting `tailwind.autoload` to `false` just disables the internal loading of these plugins, and requires you to manually add them to your postcss config in the above order.
 
 ## Usage with older @nativescript/webpack versions
 
-This usage is considered legacy and will not be supported - however we are documenting it here in case your project is still using older `@nativescript/webpack`.
+This usage is considered legacy and will not be supported - however we are documenting it here in case your project is still using older `@nativescript/webpack`. **This applies to Tailwind CSS v3 setups.**
 
 <details>
 
