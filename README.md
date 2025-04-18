@@ -23,29 +23,29 @@ If you need to use Tailwind CSS v4, follow these steps. Tailwind CSS v4 [support
 
 **Install dependencies:**
 
-    ```cli
-    npm install --save @nativescript/tailwind tailwindcss
-    ```
+```cli
+npm install --save @nativescript/tailwind tailwindcss
+```
 
 **Import Tailwind:** Add the following to your `app.css` or `app.scss`:
 
-    ```css
-    @import 'tailwindcss';
-    ```
+```css
+@import 'tailwindcss';
+```
 
 #### Upgrading from Tailwind CSS 3
 
 **Update dependencies:**
 
-    ```cli
-    npm install --save tailwindcss@latest
-    ```
+```cli
+npm install --save tailwindcss@latest
+```
 
 Open your `app.css` or `app.scss` and replace any existing Tailwind imports with:
 
-    ```css
-    @import 'tailwindcss';
-    ```
+```css
+@import 'tailwindcss';
+```
 
 ### Tailwind CSS v3 
 
@@ -53,60 +53,60 @@ If you need to use Tailwind CSS v3, follow these steps:
 
 **Install dependencies:**
 
-    ```cli
-    npm install --save @nativescript/tailwind tailwindcss
-    ```
+```cli
+npm install --save @nativescript/tailwind tailwindcss
+```
 
 **Generate `tailwind.config.js`:**
 
-    ```cli
-    npx tailwindcss init
-    ```
+```cli
+npx tailwindcss init
+```
 
 **Configure `tailwind.config.js`:** When the [NativeScript CLI](https://github.com/NativeScript/nativescript-cli) creates a new project, it may put code into a `src` folder instead of the `app` referenced below. Adjust `content`, `darkMode`, `corePlugins` plus any other settings you need. Here are the values we recommend. **If you're struggling to get Tailwind working for the first time, check the `content` setting.**
 
-    ```js
-    // tailwind.config.js
-    const plugin = require('tailwindcss/plugin');
+```js
+// tailwind.config.js
+const plugin = require('tailwindcss/plugin');
 
-    /** @type {import('tailwindcss').Config} */
-    module.exports = {
-      // check this setting first for initial setup issues
-      content: [
-        './app/**/*.{css,xml,html,vue,svelte,ts,tsx}'
-      ],
-      // use the .ns-dark class to control dark mode (applied by NativeScript) - since 'media' (default) is not supported.
-      darkMode: ['class', '.ns-dark'],
-      theme: {
-        extend: {},
-      },
-      plugins: [
-        /**
-         * A simple inline plugin that adds the ios: and android: variants
-         * 
-         * Example usage: 
-         *
-         *   <Label class="android:text-red-500 ios:text-blue-500" />
-         *
-         */
-        plugin(function ({ addVariant }) {
-          addVariant('android', '.ns-android &');
-          addVariant('ios', '.ns-ios &');
-        }),
-      ],
-      corePlugins: {
-        preflight: false // disables browser-specific resets
-      }
-    }
-    ```
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  // check this setting first for initial setup issues
+  content: [
+    './app/**/*.{css,xml,html,vue,svelte,ts,tsx}'
+  ],
+  // use the .ns-dark class to control dark mode (applied by NativeScript) - since 'media' (default) is not supported.
+  darkMode: ['class', '.ns-dark'],
+  theme: {
+    extend: {},
+  },
+  plugins: [
+    /**
+     * A simple inline plugin that adds the ios: and android: variants
+     * 
+     * Example usage: 
+     *
+     *   <Label class="android:text-red-500 ios:text-blue-500" />
+     *
+     */
+    plugin(function ({ addVariant }) {
+      addVariant('android', '.ns-android &');
+      addVariant('ios', '.ns-ios &');
+    }),
+  ],
+  corePlugins: {
+    preflight: false // disables browser-specific resets
+  }
+}
+```
 
 **Include Tailwind directives:** Change your `app.css` or `app.scss` to include the tailwind directives:
 
-    ```css
-    @tailwind base;
-    @tailwind components;
-    @tailwind utilities;
-    ```
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
 
 Start using tailwind in your app.
 
