@@ -1,3 +1,5 @@
+const { writeFileSync } = require("fs");
+
 const remRE = /\d?\.?\d+\s*r?em/g;
 
 function isSupportedProperty(prop, val = null) {
@@ -44,6 +46,10 @@ module.exports = (options = { debug: false }) => {
         mediaAtRule.remove();
       },
     },
+    // Uncomment to debug the final output
+    // OnceExit(rule) {
+    //   writeFileSync('./tailwind-output.css', rule.toString());
+    // },
     Rule(rule) {
       // remove empty rules
       if (rule.nodes.length === 0) {
@@ -90,7 +96,14 @@ module.exports = (options = { debug: false }) => {
         );
       }
 
-      // replace space and divide selectors to use a simpler selector that works in ns
+      // replace space and divide selectors to use a simpler selector that works in ns (v4 and newer)
+      if (rule.selector.includes(":not(:last-child)")) {
+        rule.selectors = rule.selectors.map((selector) => {
+          return selector.replace(":not(:last-child)", "* + *");
+        });
+      }
+
+      // replace space and divide selectors to use a simpler selector that works in ns (older versions)
       if (rule.selector.includes(":not([hidden]) ~ :not([hidden])")) {
         rule.selectors = rule.selectors.map((selector) => {
           return selector.replace(":not([hidden]) ~ :not([hidden])", "* + *");
@@ -106,6 +119,16 @@ module.exports = (options = { debug: false }) => {
             return decl.replaceWith(decl.clone({ value: "collapse" }));
         }
       }
+
+      // tailvind v4 changed how the divide and space utilities work, now we need to set two variables called
+      // --tw-divide-x-reverse and --tw-divide-y-reverse but for them to work we need to remove the variable
+      // declarations from the divide and space utilities classes
+      const broken = /--tw-(divide|space)-[xy]-reverse/g;
+      
+      if (decl.prop?.match(broken) && decl.parent.selector?.match(/\.(divide|space)-[xy]/)) {
+        return decl.remove();
+      }
+
 
       // invalid with core 8.8+ at moment
       // Note: could be supported at somepoint
@@ -226,6 +249,7 @@ const supportedProperties = {
   "font-size": true,
   "font-style": ["italic", "normal"],
   "font-weight": true,
+  "font-variation-settings": true,
   height: true,
   "highlight-color": true,
   "horizontal-align": ["left", "center", "right", "stretch"],
@@ -271,6 +295,7 @@ const supportedProperties = {
   "text-shadow": true,
   "text-transform": ["none", "capitalize", "uppercase", "lowercase"],
   transform: true,
+  rotate: true,
   "vertical-align": ["top", "center", "bottom", "stretch"],
   visibility: ["visible", "collapse"],
   width: true,
