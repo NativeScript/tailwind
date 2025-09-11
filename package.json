@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "files": [
     "src",
+    "nativescript.vite.mjs",
     "nativescript.webpack.js"
   ],
   "repository": "https://github.com/NativeScript/tailwind",
