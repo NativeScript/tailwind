@@ -1,6 +1,6 @@
 {
   "name": "@nativescript/tailwind",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "TailwindCSS for NativeScript",
   "main": "src/index.js",
   "files": [
@@ -20,6 +20,12 @@
     "css"
   ],
   "author": "Igor Randjelovic",
+  "contributors": [
+    {
+      "name": "NativeScript Team",
+      "email": "oss@nativescript.org"
+    }
+  ],
   "nativescript": {
     "platforms": {
       "android": "*",
