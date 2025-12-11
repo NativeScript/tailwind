@@ -45,6 +45,20 @@ module.exports = (options = { debug: false }) => {
       media(mediaAtRule) {
         mediaAtRule.remove();
       },
+
+      // Tailwind v4 wraps most output in @layer blocks (base/theme/utilities).
+      // NativeScript's CSS engine does not implement CSS Cascade Layers,
+      // so rules inside @layer would otherwise be ignored.
+      //
+      // Flatten those layers by lifting their child rules into the parent,
+      // preserving order so specificity/cascade still work as expected.
+      layer(layerAtRule) {
+        if (!layerAtRule.nodes || !layerAtRule.nodes.length) {
+          return layerAtRule.remove();
+        }
+
+        layerAtRule.replaceWith(...layerAtRule.nodes);
+      },
     },
     // Uncomment to debug the final output
     // OnceExit(rule) {
