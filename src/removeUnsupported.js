@@ -46,6 +46,18 @@ module.exports = (options = { debug: false }) => {
         mediaAtRule.remove();
       },
 
+      // remove @supports rules - not supported in NativeScript
+      // Tailwind v4 generates these for browser compatibility
+      supports(supportsAtRule) {
+        supportsAtRule.remove();
+      },
+
+      // remove @property rules
+      // Tailwind v4 uses these for custom property definitions
+      property(propertyAtRule) {
+        propertyAtRule.remove();
+      },
+
       // Tailwind v4 wraps most output in @layer blocks (base/theme/utilities).
       // NativeScript's CSS engine does not implement CSS Cascade Layers,
       // so rules inside @layer would otherwise be ignored.
@@ -65,8 +77,19 @@ module.exports = (options = { debug: false }) => {
     //   writeFileSync('./tailwind-output.css', rule.toString());
     // },
     Rule(rule) {
+      // remove rules with empty selectors (can happen after stripping ::placeholder)
+      if (!rule.selector || rule.selector.trim() === '') {
+        return rule.remove();
+      }
+
       // remove empty rules
       if (rule.nodes.length === 0) {
+        return rule.remove();
+      }
+
+      // remove rules that contain CSS nesting (& selector) - not supported in NativeScript
+      // Tailwind v4 uses nesting for variants like dark mode and space utilities
+      if (rule.selector.includes('&')) {
         return rule.remove();
       }
 
@@ -89,9 +112,17 @@ module.exports = (options = { debug: false }) => {
         const placeholderSelectors = [];
         rule.selectors.forEach((selector) => {
           if (isPlaceholderPseudoSelector(selector)) {
-            placeholderSelectors.push(selector.replace(/::placeholder/g, ""));
+            const cleaned = selector.replace(/::placeholder/g, "").trim();
+            // Only add non-empty selectors
+            if (cleaned) {
+              placeholderSelectors.push(cleaned);
+            }
           }
         });
+        // If all selectors became empty, remove the rule
+        if (placeholderSelectors.length === 0) {
+          return rule.remove();
+        }
         if (placeholderSelectors.length) {
           rule.selectors = placeholderSelectors;
           rule.walkDecls((decl) => {
