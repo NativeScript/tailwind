@@ -1,6 +1,6 @@
 {
   "name": "@nativescript/tailwind",
-  "version": "4.0.7",
+  "version": "4.0.8",
   "description": "TailwindCSS for NativeScript",
   "main": "src/index.js",
   "files": [
@@ -48,6 +48,7 @@
   "dependencies": {
     "@hookun/parse-animation-shorthand": "^0.1.4",
     "@csstools/postcss-is-pseudo-class": "~5.0.1",
+    "@csstools/postcss-oklab-function": "^4.0.0",
     "@tailwindcss/postcss": "^4.0.0",
     "postcss-preset-env": "^10.1.3"
   },
