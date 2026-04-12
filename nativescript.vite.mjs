@@ -6,7 +6,8 @@ let postcssConfig = "./postcss.config.js";
 try {
   const twV4 = require("@tailwindcss/postcss");
   const nsTailwind = require("@nativescript/tailwind");
-  postcssConfig = { plugins: [twV4, nsTailwind] };
+  const postCssOklabFunction = require('@csstools/postcss-oklab-function');
+  postcssConfig = { plugins: [twV4, nsTailwind, postCssOklabFunction({ preserve: false })] };
 } catch (e2) {
   console.warn(
     "Inline PostCSS unavailable, falling back to ./postcss.config.js"
