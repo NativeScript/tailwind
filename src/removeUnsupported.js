@@ -46,10 +46,14 @@ module.exports = (options = { debug: false }) => {
         mediaAtRule.remove();
       },
 
-      // remove @supports rules - not supported in NativeScript
-      // Tailwind v4 generates these for browser compatibility
+      // Flatten @supports rules instead of removing them.
+      // NativeScript Core 8.9.1+ supports color-mix() (see NativeScript/NativeScript#10718),
+      // and Tailwind v4 wraps opacity modifier utilities in @supports(color: color-mix(...)).
       supports(supportsAtRule) {
-        supportsAtRule.remove();
+        if (!supportsAtRule.nodes || !supportsAtRule.nodes.length) {
+          return supportsAtRule.remove();
+        }
+        supportsAtRule.replaceWith(...supportsAtRule.nodes);
       },
 
       // remove @property rules
