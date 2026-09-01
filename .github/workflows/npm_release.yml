@@ -1,0 +1,130 @@
+name: '@nativescript/tailwind -> npm'
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: 'Run npm publish with --dry-run (nothing is uploaded)'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  # Avoid overlapping publishes on the same ref
+  group: npm-release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write # required for npm provenance / trusted publishing (OIDC)
+
+jobs:
+  release:
+    name: Publish (gated by environment)
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ (github.event_name == 'workflow_dispatch' && inputs.dry-run) && 'npm-publish-dry-run' || 'npm-publish' }}
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c # v2.21.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Update npm (required for OIDC trusted publishing)
+        run: |
+          npm install -g npm@^11.5.1
+          npm --version
+
+      # The published version is package.json's; a release tag must agree with it
+      # (v4.0.10 -> 4.0.10). The npm dist-tag follows the version: a prerelease label
+      # becomes the tag (4.1.0-rc.0 -> rc, numeric labels -> next), stable -> latest.
+      - name: Resolve release context
+        id: ctx
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          pkg_version=$(node -p "require('./package.json').version")
+
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            tag_version="${GITHUB_REF_NAME#v}"
+            if [[ "$tag_version" != "$pkg_version" ]]; then
+              echo "Tag ${GITHUB_REF_NAME} does not match package.json version ${pkg_version}." >&2
+              exit 1
+            fi
+          fi
+
+          if [[ "$pkg_version" == *-* ]]; then
+            prerelease="${pkg_version#*-}"
+            dist_tag="${prerelease%%.*}"
+            if [[ "$dist_tag" =~ ^[0-9]+$ ]]; then
+              dist_tag="next"
+            fi
+          else
+            dist_tag="latest"
+          fi
+
+          dry_run="false"
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" && "${{ inputs.dry-run }}" == "true" ]]; then
+            dry_run="true"
+          fi
+
+          echo "version=${pkg_version}" >> "$GITHUB_OUTPUT"
+          echo "dist_tag=${dist_tag}" >> "$GITHUB_OUTPUT"
+          echo "dry_run=${dry_run}" >> "$GITHUB_OUTPUT"
+          echo "Publishing @nativescript/tailwind@${pkg_version} with dist-tag ${dist_tag} (dry-run: ${dry_run})"
+
+      - name: Package contents
+        run: npm pack --dry-run
+
+      # PUBLISH: OIDC trusted publishing (default). Avoid any lingering token auth.
+      - name: npm publish (OIDC)
+        if: ${{ vars.USE_NPM_TOKEN != 'true' }}
+        shell: bash
+        env:
+          NPM_CONFIG_PROVENANCE: true
+          NODE_AUTH_TOKEN: ""
+        run: |
+          set -euo pipefail
+          unset NODE_AUTH_TOKEN
+          rm -f ~/.npmrc || true
+          if [[ -n "${NPM_CONFIG_USERCONFIG:-}" ]]; then
+            rm -f "$NPM_CONFIG_USERCONFIG" || true
+          fi
+
+          dry_run_arg=()
+          if [[ "${{ steps.ctx.outputs.dry_run }}" == "true" ]]; then
+            dry_run_arg=(--dry-run)
+          fi
+
+          npm publish --access public --tag "${{ steps.ctx.outputs.dist_tag }}" "${dry_run_arg[@]}"
+
+      # PUBLISH: token fallback (only when explicitly enabled via the USE_NPM_TOKEN repo/environment variable).
+      - name: npm publish (token)
+        if: ${{ vars.USE_NPM_TOKEN == 'true' }}
+        shell: bash
+        env:
+          NPM_CONFIG_PROVENANCE: true
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          dry_run_arg=()
+          if [[ "${{ steps.ctx.outputs.dry_run }}" == "true" ]]; then
+            dry_run_arg=(--dry-run)
+          fi
+
+          npm publish --access public --tag "${{ steps.ctx.outputs.dist_tag }}" "${dry_run_arg[@]}"
