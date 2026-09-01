@@ -3,7 +3,9 @@ name: '@nativescript/tailwind -> npm'
 on:
   push:
     tags:
-      - 'v*'
+      # Releases are tagged with the bare version (4.0.9); a v-prefixed tag is accepted too.
+      - '[0-9]*'
+      - 'v[0-9]*'
   workflow_dispatch:
     inputs:
       dry-run:
@@ -49,7 +51,7 @@ jobs:
           npm --version
 
       # The published version is package.json's; a release tag must agree with it
-      # (v4.0.10 -> 4.0.10). The npm dist-tag follows the version: a prerelease label
+      # (4.0.10, or v4.0.10). The npm dist-tag follows the version: a prerelease label
       # becomes the tag (4.1.0-rc.0 -> rc, numeric labels -> next), stable -> latest.
       - name: Resolve release context
         id: ctx
