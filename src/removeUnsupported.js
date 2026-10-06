@@ -1,6 +1,6 @@
 const { writeFileSync } = require("fs");
 
-const remRE = /\d?\.?\d+\s*r?em/g;
+const remRE = /\d*\.?\d+\s*r?em/g;
 
 // Media query features @nativescript/core can evaluate
 // (packages/core/css-mediaquery). Anything else in a query drops that
@@ -16,7 +16,7 @@ const supportedMediaFeatures = [
 
 // rem/em have no meaning inside NS media query lengths — Length.parse treats
 // a bare number as dips, so convert to dips (16px basis like declarations).
-const mqLengthRE = /(\d?\.?\d+)\s*r?em/g;
+const mqLengthRE = /(\d*\.?\d+)\s*r?em/g;
 
 function featureIsSupported(name) {
 	const base = name.replace(/^(min|max)-/, "");
@@ -86,26 +86,25 @@ function rewriteMediaFeature(inner) {
 function rewriteMediaPrelude(params) {
 	const queries = [];
 	for (const query of params.split(",")) {
+		// core's media query parser rejects `not` queries (not-sm:, not-dark:, ...)
+		if (/^\s*not\b/i.test(query)) continue;
 		const replaced = query.replace(/\(([^()]+)\)/g, (_, inner) => {
 			const out = rewriteMediaFeature(inner);
 			return out === null ? " __UNSUPPORTED_MEDIA__" : out.join(" and ");
 		});
 		if (!replaced.includes(" __UNSUPPORTED_MEDIA__")) {
-			queries.push(replaced);
+			queries.push(replaced.trim());
 		}
 	}
 	return queries.length ? queries.join(", ") : null;
 }
 
 /**
- * Expand :where(...) selectors. A comma inside :where lists alternatives —
- * the old code spliced the raw text back in, turning
- * `.x:where(.ns-dark, .ns-dark *)` into `.x.ns-dark, .ns-dark *` — the second
- * selector matches every descendant of .ns-dark, not just .x. Proper
- * expansion: alternatives without a combinator become extra conditions on
- * the element; alternatives ending in `*` put the element in that ancestor
- * context; alternatives whose last compound is a real condition splice it
- * onto the element.
+ * Expand :where(...) into one selector per comma alternative. Alternatives
+ * without a combinator become extra conditions on the element; alternatives
+ * ending in `*` put the element in that ancestor context
+ * (`.x:where(.ns-dark *)` → `.ns-dark .x`); alternatives whose last compound
+ * is a real condition splice it onto the element.
  */
 function expandWhereSelector(selector) {
 	const start = selector.indexOf(":where(");
@@ -197,6 +196,24 @@ const logicalToPhysical = {
 	"border-block-color": ["border-top-color", "border-bottom-color"],
 };
 
+const oppositeSide = {
+	left: "right",
+	right: "left",
+	top: "bottom",
+	bottom: "top",
+	"inline-start": "inline-end",
+	"inline-end": "inline-start",
+	"block-start": "block-end",
+	"block-end": "block-start",
+};
+
+function swapSides(prop) {
+	return prop.replace(
+		/-(inline-start|inline-end|block-start|block-end|left|right|top|bottom)(?=-|$)/,
+		(_, side) => `-${oppositeSide[side]}`,
+	);
+}
+
 /**
  * Tailwind v4 transform utilities set `--tw-translate-*`/`--tw-scale-*`
  * custom properties in the same rule, then apply them via `translate:`/
@@ -243,9 +260,45 @@ function resolveSpacing(root) {
 	return value;
 }
 
+// Core's transform parser ignores `%`, so a percent translate (translate-x-1/2,
+// translate-x-full) would move by that many dips instead of the view's size.
+const UNSUPPORTED_TRANSFORM_ARG = Symbol("unsupported");
+
+// Evaluates calc() arithmetic over unitless numbers; null for anything else.
+function evaluateArithmetic(expression) {
+	const tokens = expression.replace(/calc\(/g, "(").match(/\d*\.?\d+|[-+*/()]|\S/g) ?? [];
+	let i = 0;
+	const factor = () => {
+		const token = tokens[i++];
+		if (token === "-") return -factor();
+		if (token === "+") return factor();
+		if (token === "(") {
+			const value = sum();
+			return tokens[i++] === ")" ? value : NaN;
+		}
+		return /^\d*\.?\d+$/.test(token) ? parseFloat(token) : NaN;
+	};
+	const product = () => {
+		let value = factor();
+		while (tokens[i] === "*" || tokens[i] === "/") {
+			value = tokens[i++] === "*" ? value * factor() : value / factor();
+		}
+		return value;
+	};
+	const sum = () => {
+		let value = product();
+		while (tokens[i] === "+" || tokens[i] === "-") {
+			value = tokens[i++] === "+" ? value + product() : value - product();
+		}
+		return value;
+	};
+	const value = sum();
+	return i === tokens.length && Number.isFinite(value) ? value : null;
+}
+
 // Resolve a --tw-* arg to a literal for translateX(N)/scaleX(N).
-// 'calc(var(--spacing) * 4)' → spacing × 4; '95%' → 0.95 (scale);
-// '16px'/'-8'/'1rem' → number (rem → ×16).
+// 'calc(var(--spacing) * 4)' → spacing × 4; '95%' / 'calc(100% * -1)' →
+// 0.95 / -1 (scale); '16px'/'-8'/'1rem' → number (rem → ×16).
 function resolveTransformArg(raw, isScale, root) {
 	const v = raw.trim();
 	const spacingCalc = v.match(/^calc\(var\(--spacing\)\s*\*\s*(-?[\d.]+)\)$/);
@@ -253,12 +306,9 @@ function resolveTransformArg(raw, isScale, root) {
 		return resolveSpacing(root) * parseFloat(spacingCalc[1]);
 	}
 	if (v.includes("var(")) return null;
-	const plainCalc = v.match(/^calc\((-?[\d.]+)\s*([*+/])\s*(-?[\d.]+)\)$/);
-	if (plainCalc) {
-		const [, a, op, b] = plainCalc;
-		const x = parseFloat(a);
-		const y = parseFloat(b);
-		return op === "*" ? x * y : op === "+" ? x + y : x / y;
+	if (!isScale && v.includes("%")) return UNSUPPORTED_TRANSFORM_ARG;
+	if (v.startsWith("calc(")) {
+		return evaluateArithmetic(v.replace(/(\d*\.?\d+)%/g, (_, n) => `${parseFloat(n) / 100}`));
 	}
 	const n = parseFloat(v);
 	if (Number.isNaN(n)) return null;
@@ -410,9 +460,8 @@ module.exports = (options = { debug: false }) => {
 				// rule.selector.replace('::placeholder', '')
 			}
 
-			// expand :where() pseudo selectors — NS can't parse them, and
-			// comma alternatives need per-alternative expansion (Tailwind
-			// v4 emits them for dark: and space-*/divide-* variants).
+			// expand :where() (Tailwind v4 emits it for dark: and space-*/divide-*)
+			// so the selectors below can be rewritten into forms core matches.
 			while (rule.selectors.some((s) => s.includes(":where("))) {
 				rule.selectors = rule.selectors.flatMap(expandWhereSelector);
 			}
@@ -421,6 +470,11 @@ module.exports = (options = { debug: false }) => {
 			if (rule.selector.includes(":not(:last-child)")) {
 				rule.selectors = rule.selectors.map((selector) => {
 					return selector.replace(":not(:last-child)", "* + *");
+				});
+				// v4 puts the gap on the end side of all-but-last children; `* + *`
+				// selects all-but-first, so the gap moves to the start side.
+				rule.walkDecls(/^(margin|border)-/, (decl) => {
+					decl.prop = swapSides(decl.prop);
 				});
 			}
 
@@ -463,6 +517,11 @@ module.exports = (options = { debug: false }) => {
 				);
 				decl.parent.insertAfter(decl, clones);
 				return decl.remove();
+			}
+
+			// max-w-none/max-h-none: core spells "no maximum" as auto and rejects none
+			if ((decl.prop === "max-width" || decl.prop === "max-height") && decl.value === "none") {
+				return decl.replaceWith(decl.clone({ value: "auto" }));
 			}
 
 			// replace vertical-align: middle
@@ -534,41 +593,57 @@ module.exports = (options = { debug: false }) => {
 					sx: "var(--tw-scale-x, 1)",
 					sy: "var(--tw-scale-y, 1)",
 				};
-				let hasTransform = false;
-				for (const sib of rule.nodes ?? []) {
+				// Only rules applying a translate:/scale: shorthand get a transform;
+				// rules that just initialize the vars (the `*` reset) must not.
+				let hasShorthand = false;
+				let hasSupportedArg = false;
+				const isLiteral = (v) => v != null && v !== UNSUPPORTED_TRANSFORM_ARG;
+				for (const sib of [...(rule.nodes ?? [])]) {
 					if (sib.type !== "decl") continue;
 					const fn = transformVarToFn[sib.prop];
 					if (fn) {
 						const v = resolveTransformArg(sib.value, fn.startsWith("scale"), decl.root());
+						if (v === UNSUPPORTED_TRANSFORM_ARG) {
+							sib.remove();
+							continue;
+						}
 						if (v != null) {
 							sib.value = `${v}`;
 						}
-						hasTransform = true;
+						hasSupportedArg = true;
 					} else if (sib.prop === "translate" || sib.prop === "scale") {
 						const isS = sib.prop === "scale";
-						if (sib.value.trim() !== "none" && !sib.value.includes("var(")) {
+						hasShorthand = true;
+						if (sib.value.trim() === "none") {
+							parts[isS ? "sx" : "tx"] = isS ? "1" : "0";
+							parts[isS ? "sy" : "ty"] = isS ? "1" : "0";
+							hasSupportedArg = true;
+						} else if (!sib.value.includes("var(")) {
 							const [x, y] = splitArgs(sib.value);
 							const xv = resolveTransformArg(x, isS, decl.root());
-							if (xv != null) parts[isS ? "sx" : "tx"] = `${xv}`;
+							if (isLiteral(xv)) {
+								parts[isS ? "sx" : "tx"] = `${xv}`;
+								hasSupportedArg = true;
+							}
 							const yv = y ?? (isS ? x : undefined);
 							const yr = yv !== undefined ? resolveTransformArg(yv, isS, decl.root()) : null;
-							if (yr != null) parts[isS ? "sy" : "ty"] = `${yr}`;
+							if (isLiteral(yr)) {
+								parts[isS ? "sy" : "ty"] = `${yr}`;
+								hasSupportedArg = true;
+							}
 						}
-						hasTransform = true;
 						sib.remove();
 					}
 				}
-				if (hasTransform) {
+				if (hasShorthand && hasSupportedArg) {
 					const value =
 						`translateX(${parts.tx}) translateY(${parts.ty}) ` +
 						`scaleX(${parts.sx}) scaleY(${parts.sy})`;
-					rule.insertBefore(decl, decl.clone({ prop: "transform", value }));
+					// `decl` itself may have been folded away above, so it can't anchor this.
+					rule.prepend(decl.clone({ prop: "transform", value }));
 				}
-				// shorthand decls get folded into transform; --tw-* vars stay
+				// shorthand decls are folded into transform; --tw-* vars stay
 				// (rewritten to literals — they're the composition channel)
-				if (decl.prop === "translate" || decl.prop === "scale") {
-					return decl.remove();
-				}
 				return;
 			}
 

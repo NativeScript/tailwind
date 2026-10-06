@@ -73,7 +73,7 @@ test('emits a var-composed transform: shorthand with literal --tw-* values', asy
 	);
 	// --spacing value from the stylesheet governs the spacing-var resolution
 	assert.equal(
-		await run('.r{--spacing:8}.x{--tw-translate-y:calc(var(--spacing) * 2)}'),
+		await run('.r{--spacing:8}.x{--tw-translate-y:calc(var(--spacing) * 2);translate:var(--tw-translate-x) var(--tw-translate-y)}'),
 		`.r{--spacing:8}.x{${T};--tw-translate-y:16}`,
 	);
 	// literal shorthand args bake into the matching axis slot
@@ -101,6 +101,63 @@ test('expands :where comma alternatives onto the subject, not the whole tree', a
 	);
 	assert.equal(
 		await run(':where(.space-y > :not(:last-child)){margin-bottom:4px}'),
-		'.space-y > * + *{margin-bottom:4px}',
+		'.space-y > * + *{margin-top:4px}',
 	);
+});
+
+test('converts multi-digit rem values, including preset-env max-* breakpoints', async () => {
+	assert.equal(
+		await run('@media (max-width: 39.999rem){.x{gap:8px}}'),
+		'@media (max-width: 639.984){.x{gap:8px}}',
+	);
+	assert.equal(await run('.x{width:12.5rem}'), '.x{width:200}');
+});
+
+test('drops not queries, which core cannot parse', async () => {
+	assert.equal(await run('@media not (min-width: 40rem){.x{gap:8px}}'), '');
+	assert.equal(
+		await run('@media not (orientation: portrait), (min-width: 40rem){.x{gap:8px}}'),
+		'@media (min-width: 640){.x{gap:8px}}',
+	);
+});
+
+test('drops percent translates and resolves percent scale arithmetic', async () => {
+	assert.equal(
+		await run('.x{--tw-translate-x:calc(1 / 2 * 100%);translate:var(--tw-translate-x) var(--tw-translate-y)}'),
+		'',
+	);
+	assert.equal(await run('.x{translate:100% 4px}'), '.x{transform:translateX(var(--tw-translate-x, 0)) translateY(4) scaleX(var(--tw-scale-x, 1)) scaleY(var(--tw-scale-y, 1))}');
+	assert.equal(
+		await run('.x{--tw-scale-x:calc(100% * -1);scale:var(--tw-scale-x) var(--tw-scale-y)}'),
+		'.x{transform:translateX(var(--tw-translate-x, 0)) translateY(var(--tw-translate-y, 0)) scaleX(var(--tw-scale-x, 1)) scaleY(var(--tw-scale-y, 1));--tw-scale-x:-1}',
+	);
+});
+
+test('leaves rules that only initialize transform vars without a transform', async () => {
+	assert.equal(
+		await run('*, ::before{--tw-translate-x:0;--tw-scale-x:1}'),
+		'*, ::before{--tw-translate-x:0;--tw-scale-x:1}',
+	);
+});
+
+test('treats translate:none and scale:none as identity on their axes', async () => {
+	assert.equal(
+		await run('.x{translate:none}'),
+		'.x{transform:translateX(0) translateY(0) scaleX(var(--tw-scale-x, 1)) scaleY(var(--tw-scale-y, 1))}',
+	);
+});
+
+test('moves space/divide gaps to the start side for * + *', async () => {
+	assert.equal(
+		await run(':where(.divide-x > :not(:last-child)){border-left-width:0px;border-right-width:1px}'),
+		'.divide-x > * + *{border-right-width:0px;border-left-width:1px}',
+	);
+	assert.equal(
+		await run(':where(.space-x > :not(:last-child)){margin-inline-start:0px;margin-inline-end:4px}'),
+		'.space-x > * + *{margin-right:0px;margin-left:4px}',
+	);
+});
+
+test('maps max-width/max-height none to auto', async () => {
+	assert.equal(await run('.x{max-width:none;max-height:none}'), '.x{max-width:auto;max-height:auto}');
 });
