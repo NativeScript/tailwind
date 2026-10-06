@@ -90,7 +90,7 @@ jobs:
         run: npm install --no-package-lock --no-audit --no-fund
 
       - name: Test
-        run: node --test test/
+        run: node --test 'test/*.test.mjs'
 
       # Tag push: publish package.json's version, which the tag must match (4.0.10, or v4.0.10).
       # Dispatch: release `version`, or bump by release-type/preid; a version equal to package.json's
