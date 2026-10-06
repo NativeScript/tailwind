@@ -170,8 +170,8 @@ function splitArgs(value) {
 /**
  * Tailwind v4 emits CSS logical properties for the px/py/mx/my, space, and
  * divide utilities; @nativescript/core only implements the physical sides.
- * Inline-* maps to left/right, block-* to top/bottom — an LTR reading;
- * RTL apps should override per-direction instead.
+ * Inline-* maps to left/right, block-* to top/bottom; start/end sides also
+ * get a right-to-left override (see appendRtlOverride).
  */
 const logicalToPhysical = {
 	"margin-inline": ["margin-left", "margin-right"],
@@ -195,6 +195,44 @@ const logicalToPhysical = {
 	"border-block-end-width": ["border-bottom-width"],
 	"border-block-color": ["border-top-color", "border-bottom-color"],
 };
+
+// Start/end sides that flip in right-to-left layouts: [LTR side, RTL side].
+const directionalSides = {
+	"margin-inline-start": ["margin-left", "margin-right"],
+	"margin-inline-end": ["margin-right", "margin-left"],
+	"padding-inline-start": ["padding-left", "padding-right"],
+	"padding-inline-end": ["padding-right", "padding-left"],
+	"border-inline-start-width": ["border-left-width", "border-right-width"],
+	"border-inline-end-width": ["border-right-width", "border-left-width"],
+};
+
+// The LTR physical rule stays as-is; this override follows it, flipping the
+// side under core's .ns-rtl root class (core 9.0+). :where() keeps the override's
+// specificity equal to the original's, so later physical utilities (pl-*, pr-*)
+// still win as on the web; elsewhere the override never matches.
+
+function appendRtlOverride(rule) {
+	const flipped = rule.nodes.filter((node) => node.type === "decl" && directionalSides[node.prop]);
+	if (!flipped.length) return;
+
+	const values = new Map();
+	for (const decl of flipped) {
+		const [ltrSide, rtlSide] = directionalSides[decl.prop];
+		if (!values.has(ltrSide)) values.set(ltrSide, "unset");
+		values.set(rtlSide, decl.value);
+	}
+
+	const override = rule.clone({
+		selectors: rule.selectors.map((selector) => `:where(.ns-rtl) ${selector}`),
+		nodes: [],
+	});
+	for (const [prop, value] of values) {
+		override.append({ prop, value });
+	}
+	// visitors receive proxies, so the marker lives on the node, not in a WeakSet
+	override.raws.nsRtlOverride = true;
+	rule.after(override);
+}
 
 const oppositeSide = {
 	left: "right",
@@ -403,6 +441,8 @@ module.exports = (options = { debug: false }) => {
 		//   writeFileSync('./tailwind-output.css', rule.toString());
 		// },
 		Rule(rule) {
+			if (rule.raws.nsRtlOverride) return;
+
 			// remove rules with empty selectors (can happen after stripping ::placeholder)
 			if (!rule.selector || rule.selector.trim() === '') {
 				return rule.remove();
@@ -484,6 +524,8 @@ module.exports = (options = { debug: false }) => {
 					return selector.replace(":not([hidden]) ~ :not([hidden])", "* + *");
 				});
 			}
+
+			appendRtlOverride(rule);
 		},
 		Declaration(decl) {
 			// tailvind v4 changed how the divide and space utilities work, now we need to set two variables called

@@ -85,12 +85,24 @@ test('emits a var-composed transform: shorthand with literal --tw-* values', asy
 
 test('rewrites logical properties to physical sides', async () => {
 	assert.equal(
-		await run('.x{padding-inline:4px;padding-block:8px;margin-inline-end:2px}'),
-		'.x{padding-left:4px;padding-right:4px;padding-top:8px;padding-bottom:8px;margin-right:2px}',
+		await run('.x{padding-inline:4px;padding-block:8px}'),
+		'.x{padding-left:4px;padding-right:4px;padding-top:8px;padding-bottom:8px}',
+	);
+});
+
+test('flips start/end sides under .ns-rtl without raising specificity', async () => {
+	assert.equal(
+		await run('.ps-2{padding-inline-start:8px}'),
+		'.ps-2{padding-left:8px}:where(.ns-rtl) .ps-2{padding-left:unset;padding-right:8px}',
+	);
+	// both sides in one rule: the RTL side values must not be unset by each other
+	assert.equal(
+		await run('.x{margin-inline-start:4px;margin-inline-end:8px}'),
+		'.x{margin-left:4px;margin-right:8px}:where(.ns-rtl) .x{margin-left:8px;margin-right:4px}',
 	);
 	assert.equal(
-		await run('.x > * + *{margin-inline-start:4px;border-inline-start-width:1px}'),
-		'.x > * + *{margin-left:4px;border-left-width:1px}',
+		await run('@media (min-width: 640px){.x{border-inline-end-width:1px}}'),
+		'@media (min-width: 640px){.x{border-right-width:1px}:where(.ns-rtl) .x{border-right-width:unset;border-left-width:1px}}',
 	);
 });
 
@@ -154,7 +166,7 @@ test('moves space/divide gaps to the start side for * + *', async () => {
 	);
 	assert.equal(
 		await run(':where(.space-x > :not(:last-child)){margin-inline-start:0px;margin-inline-end:4px}'),
-		'.space-x > * + *{margin-right:0px;margin-left:4px}',
+		'.space-x > * + *{margin-right:0px;margin-left:4px}:where(.ns-rtl) .space-x > * + *{margin-right:4px;margin-left:0px}',
 	);
 });
 
