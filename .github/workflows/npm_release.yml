@@ -1,5 +1,8 @@
 name: '@nativescript/tailwind -> npm'
 
+# npm's trusted publisher for @nativescript/tailwind names this file (npm_release.yml)
+# and the npm-publish environment; renaming either breaks OIDC publishing.
+
 on:
   push:
     tags:
@@ -8,8 +11,28 @@ on:
       - 'v[0-9]*'
   workflow_dispatch:
     inputs:
+      version:
+        description: 'Exact version to release (e.g. 4.2.0-rc.0). Overrides release-type/preid. Set it to the current package.json version to publish without bumping.'
+        required: false
+        type: string
+        default: ''
+      release-type:
+        description: "Version bump when 'version' is empty"
+        required: false
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+          - prerelease
+        default: patch
+      preid:
+        description: 'Prerelease identifier (release-type=prerelease only; also becomes the npm dist-tag, e.g. next | rc)'
+        required: false
+        type: string
+        default: next
       dry-run:
-        description: 'Run npm publish with --dry-run (nothing is uploaded)'
+        description: 'Bump and pack locally without pushing, publishing, or creating a GitHub release'
         required: false
         type: boolean
         default: false
@@ -20,24 +43,36 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: read
+  contents: write # push the release commit and tag, create the GitHub release
   id-token: write # required for npm provenance / trusted publishing (OIDC)
 
 jobs:
   release:
     name: Publish (gated by environment)
+    # Tags pushed by this workflow do not re-trigger it, but guard anyway.
+    if: ${{ github.actor != 'github-actions[bot]' }}
     runs-on: ubuntu-latest
     environment:
       name: ${{ (github.event_name == 'workflow_dispatch' && inputs.dry-run) && 'npm-publish-dry-run' || 'npm-publish' }}
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c # v2.21.0
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
         with:
           egress-policy: audit
 
-      - name: Checkout repository
+      - name: Checkout repository (full history for tags and release notes)
         uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+
+      # The checkout is pinned to the SHA resolved at dispatch time, and main may have moved
+      # while the run waited for environment approval; the release commit must land on the tip.
+      - name: Sync to latest branch tip (dispatch)
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          git fetch origin "$GITHUB_REF_NAME"
+          git reset --hard "origin/$GITHUB_REF_NAME"
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
@@ -50,27 +85,67 @@ jobs:
           npm install -g npm@^11.5.1
           npm --version
 
-      # The published version is package.json's; a release tag must agree with it
-      # (4.0.10, or v4.0.10). The npm dist-tag follows the version: a prerelease label
-      # becomes the tag (4.1.0-rc.0 -> rc, numeric labels -> next), stable -> latest.
+      # The published package resolves its dependency ranges fresh, so test against that too.
+      - name: Install dependencies
+        run: npm install --no-package-lock --no-audit --no-fund
+
+      - name: Test
+        run: node --test test/
+
+      # Tag push: publish package.json's version, which the tag must match (4.0.10, or v4.0.10).
+      # Dispatch: release `version`, or bump by release-type/preid; a version equal to package.json's
+      # publishes without bumping (e.g. to retry a failed publish).
+      # The npm dist-tag follows the version: a prerelease label becomes the tag
+      # (4.1.0-rc.0 -> rc, numeric labels -> next), stable -> latest.
       - name: Resolve release context
         id: ctx
         shell: bash
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+          INPUT_RELEASE_TYPE: ${{ inputs['release-type'] }}
+          INPUT_PREID: ${{ inputs.preid }}
+          INPUT_DRY_RUN: ${{ inputs.dry-run }}
         run: |
           set -euo pipefail
 
           pkg_version=$(node -p "require('./package.json').version")
+          semver() { npx --yes semver@7.7.2 "$@"; }
 
-          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-            tag_version="${GITHUB_REF_NAME#v}"
-            if [[ "$tag_version" != "$pkg_version" ]]; then
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            if [[ -n "${INPUT_VERSION}" ]]; then
+              version=$(semver "${INPUT_VERSION#v}") || { echo "Invalid version '${INPUT_VERSION}'." >&2; exit 1; }
+            elif [[ "${INPUT_RELEASE_TYPE}" == "prerelease" ]]; then
+              version=$(semver -i prerelease --preid "${INPUT_PREID}" "$pkg_version")
+            else
+              version=$(semver -i "${INPUT_RELEASE_TYPE}" "$pkg_version")
+            fi
+            tag="$version"
+            dry_run="${INPUT_DRY_RUN}"
+          else
+            version="${GITHUB_REF_NAME#v}"
+            if [[ "$version" != "$pkg_version" ]]; then
               echo "Tag ${GITHUB_REF_NAME} does not match package.json version ${pkg_version}." >&2
+              exit 1
+            fi
+            tag="${GITHUB_REF_NAME}"
+            dry_run="false"
+          fi
+
+          bump="false"
+          if [[ "$version" != "$pkg_version" ]]; then
+            bump="true"
+            if [[ "${GITHUB_REF}" != "refs/heads/main" ]]; then
+              echo "Version bumps are released from main; dispatch this workflow on main." >&2
+              exit 1
+            fi
+            if git rev-parse -q --verify "refs/tags/${version}" >/dev/null; then
+              echo "Tag ${version} already exists." >&2
               exit 1
             fi
           fi
 
-          if [[ "$pkg_version" == *-* ]]; then
-            prerelease="${pkg_version#*-}"
+          if [[ "$version" == *-* ]]; then
+            prerelease="${version#*-}"
             dist_tag="${prerelease%%.*}"
             if [[ "$dist_tag" =~ ^[0-9]+$ ]]; then
               dist_tag="next"
@@ -79,18 +154,65 @@ jobs:
             dist_tag="latest"
           fi
 
-          dry_run="false"
-          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" && "${{ inputs.dry-run }}" == "true" ]]; then
-            dry_run="true"
-          fi
+          {
+            echo "version=${version}"
+            echo "tag=${tag}"
+            echo "bump=${bump}"
+            echo "dist_tag=${dist_tag}"
+            echo "dry_run=${dry_run}"
+          } >> "$GITHUB_OUTPUT"
+          echo "Releasing @nativescript/tailwind@${version} with dist-tag ${dist_tag} (bump: ${bump}, dry-run: ${dry_run})"
 
-          echo "version=${pkg_version}" >> "$GITHUB_OUTPUT"
-          echo "dist_tag=${dist_tag}" >> "$GITHUB_OUTPUT"
-          echo "dry_run=${dry_run}" >> "$GITHUB_OUTPUT"
-          echo "Publishing @nativescript/tailwind@${pkg_version} with dist-tag ${dist_tag} (dry-run: ${dry_run})"
+      - name: Bump version and changelog (dispatch)
+        if: ${{ steps.ctx.outputs.bump == 'true' }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.ctx.outputs.version }}
+        run: |
+          set -euo pipefail
+          npm version "$VERSION" --no-git-tag-version
+          node .github/scripts/release-notes.mjs generate "$VERSION" --write
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "release: @nativescript/tailwind ${VERSION}"
+          git tag "$VERSION"
+          git show --stat HEAD
+
+      - name: Release notes
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.ctx.outputs.version }}
+          TAG: ${{ steps.ctx.outputs.tag }}
+        run: |
+          set -euo pipefail
+          if ! node .github/scripts/release-notes.mjs extract "$VERSION" > "$RUNNER_TEMP/release-notes.md"; then
+            to="$TAG"
+            git rev-parse -q --verify "refs/tags/${TAG}" >/dev/null || to=HEAD
+            node .github/scripts/release-notes.mjs generate "$VERSION" --to "$to" > "$RUNNER_TEMP/release-notes.md"
+          fi
+          cat "$RUNNER_TEMP/release-notes.md"
 
       - name: Package contents
         run: npm pack --dry-run
+
+      # --atomic: if main moved and the push is rejected, the tag is rejected with it,
+      # so a failed run leaves nothing behind and a plain re-dispatch retries.
+      - name: Push release commit and tag (dispatch)
+        if: ${{ steps.ctx.outputs.bump == 'true' && steps.ctx.outputs.dry_run != 'true' }}
+        run: git push --atomic origin "HEAD:${GITHUB_REF_NAME}" "refs/tags/${{ steps.ctx.outputs.version }}"
+
+      # A dispatch publishing the current version may still need its tag for the GitHub release.
+      - name: Push missing tag (dispatch, no bump)
+        if: ${{ github.event_name == 'workflow_dispatch' && steps.ctx.outputs.bump != 'true' && steps.ctx.outputs.dry_run != 'true' }}
+        env:
+          VERSION: ${{ steps.ctx.outputs.version }}
+        run: |
+          if ! git rev-parse -q --verify "refs/tags/${VERSION}" >/dev/null; then
+            git tag "$VERSION"
+            git push origin "refs/tags/${VERSION}"
+          fi
 
       # PUBLISH: OIDC trusted publishing (default). Avoid any lingering token auth.
       - name: npm publish (OIDC)
@@ -130,3 +252,23 @@ jobs:
           fi
 
           npm publish --access public --tag "${{ steps.ctx.outputs.dist_tag }}" "${dry_run_arg[@]}"
+
+      - name: GitHub release
+        if: ${{ steps.ctx.outputs.dry_run != 'true' }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.ctx.outputs.tag }}
+          DIST_TAG: ${{ steps.ctx.outputs.dist_tag }}
+        run: |
+          set -euo pipefail
+          release_args=(--latest)
+          if [[ "$DIST_TAG" != "latest" ]]; then
+            release_args=(--prerelease --latest=false)
+          fi
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release edit "$TAG" --notes-file "$RUNNER_TEMP/release-notes.md"
+          else
+            gh release create "$TAG" --verify-tag --title "$TAG" --notes-file "$RUNNER_TEMP/release-notes.md" "${release_args[@]}"
+          fi
